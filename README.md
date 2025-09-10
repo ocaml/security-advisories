@@ -6,6 +6,22 @@ This database is still work in progress, please stay tuned for updates.
 
 It is maintained by the [OCaml security team](https://ocaml.org/security).
 
-## Reporting vulnerabilities
+## Receiving Security Advisories
 
-To report a vulnerability privately, please follow our [disclosure process](https://ocaml.org/security-reporting).
+On the public [mailing list ocsf-ocaml-security-announcements](https://sympa.inria.fr/sympa/info/ocsf-ocaml-security-announcements) every security advisory will be published. Everyone can subscribe to that mailing list. It is only for security advisories, there won't be any discussion on the mailing list.
+
+## Reporting Vulnerabilities
+
+1. Someone (the *reporter*) reports a security issue to [security@ocaml.org](mailto:security@ocaml.org) or as a private GitHub issue in [ocaml/security-advisories](https://github.com/ocaml/security-advisories) repository.
+2. The *OCaml security team* replies with "we have received your mail, we'll be back within a week" within three working days; "do you want your identity being disclosed to the upstream author and/or general public?"
+3. The *OCaml security team* figures out who (the *responder*) wants to take the issue within the security team.
+4. The *responder* looks at the issue, and if it is valid, it contacts the *upstream maintainer(s)* of the package, and/or the *opam maintainer(s)* or *author(s)* as appropriate (the *maintainer(s)*)
+   - (4a.) The *responder* applies for a CVE number unless the *reporter* already has one.
+   - (4b.) The *responder* figures out (with upstream authors) which versions are affected.
+5. The *reporter*, *responder*, and *maintainer* discuss about the embargo &mdash; the usual period is 90 days (but publishing it earlier if there's a patch available is fine)
+6. When the patch is available, discussion between *reporter*, *maintainer(s)*, and *responder* whether this fixes the issue (the *reporter* may have some test environment and can confirm it).
+7. Potentially a pre-announcement about which package and when the advisory and patch will be published for core opam packages and high impact vulnerabilities.
+8. The *responder* publishes the security advisory
+   - (8b.) The advisory is sent to the [mailing list for security announcements](https://sympa.inria.fr/sympa/info/ocsf-ocaml-security-announcements)
+   - (8c.) The *maintainer(s)* (or the *responder*) publishes the fixed opam package to opam.ocaml.org (and mark vulnerable packages unavailable)
+   - (8d.) The *responder* publishes the security announcement also on the [database](https://github.com/ocaml/security-advisories), which is an input source for [OSV](https://osv.dev)
