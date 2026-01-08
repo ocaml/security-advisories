@@ -27,7 +27,7 @@ jobs:
       - name: Check and run advisories
         run: |
           git fetch origin ${{ github.base_ref }}
-          CHANGED_FILES=$(git diff --name-only origin/${{ github.base_ref }}...HEAD)
+          CHANGED_FILES=$(git diff --name-only origin/${{ github.base_ref }}...HEAD | grep advisories)
           for x in $CHANGED_FILES; do
             opam exec -- advisories.exe $x
           done
