@@ -15,6 +15,8 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
 
       - name: Use OCaml ${{ matrix.ocaml-version }}
         uses: ocaml/setup-ocaml@v3
@@ -28,13 +30,18 @@ jobs:
         run: curl -OL https://raw.githubusercontent.com/ossf/osv-schema/refs/heads/main/validation/schema.json
 
       - name: Install check-jsonschema
-        run: sudo apt-get install python3-check-jsonschema
+        run: pipx install check-jsonschema
 
       - name: Check and run advisories
         run: |
           git fetch origin ${{ github.base_ref }}
-          CHANGED_FILES=$(git diff --name-only origin/${{ github.base_ref }}...HEAD | grep advisories)
+          CHANGED_FILES=$(git diff --name-only -r HEAD^1 HEAD | grep advisories)
           for x in $CHANGED_FILES; do
-            opam exec -- advisories.exe $x > $x.json
+            echo "Converting advisory $x"
+            opam exec -- advisories $x > $x.json
+            echo "Advisory is:"
+            cat $x.json | jq
+            echo "Validating advisory $x.json"
             check-jsonschema --schemafile ./schema.json $x.json
+            echo "Done with exit code $?"
           done
