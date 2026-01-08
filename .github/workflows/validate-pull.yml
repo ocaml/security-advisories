@@ -28,7 +28,7 @@ jobs:
         run: curl -OL https://raw.githubusercontent.com/ossf/osv-schema/refs/heads/main/validation/schema.json
 
       - name: Install check-jsonschema
-        run: sudo apt install python3-check-jsonschema
+        run: sudo apt-get install python3-check-jsonschema
 
       - name: Check and run advisories
         run: |
