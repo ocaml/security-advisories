@@ -1,6 +1,6 @@
-name: validate_advisory
+name: generate_osv
 
-on: [pull_request]
+on: [push]
 
 jobs:
   build:
@@ -34,16 +34,37 @@ jobs:
 
       - name: Check and run advisories
         run: |
-          git fetch origin ${{ github.base_ref }}
           opam repository add main git+https://github.com/ocaml/opam-repository.git
           opam repository add archive git+https://github.com/ocaml/opam-repository-archive.git
-          CHANGED_FILES=$(git diff --name-only -r HEAD^1 HEAD | grep advisories)
-          for x in $CHANGED_FILES; do
+          git fetch origin ${{ github.base_ref }}
+          for x in $(find advisories/ -type f); do
             echo "Converting advisory $x"
             opam exec -- advisories $x > $x.json
-            echo "Advisory is:"
-            cat $x.json | jq
             echo "Validating advisory $x.json"
             check-jsonschema --schemafile ./schema.json $x.json
             echo "Done with exit code $?"
+            YEAR=$(echo $x | cut -d '/' -f 2)
+            mkdir -p osv/$YEAR
+            BASE=$(basename $x)
+            TARGET=$(echo "osv/$YEAR/${BASE/md/json}")
+            echo "Moving to $TARGET"
+            mv $x.json $TARGET
           done
+      - name: Publish OSV data
+        if: ${{ github.event_name == 'push' && github.ref_name == 'main' }}
+        env:
+          GITHUB_SHA: ${{ github.sha }}
+        run: |
+          DATA_DIR=$PWD/osv
+          BRANCH=generated-osv
+          REF=refs/remotes/origin/$BRANCH
+          export GIT_WORK_TREE=$DATA_DIR
+          git read-tree "$REF"
+          git add --all --intent-to-add
+          git diff --quiet && exit
+          git add --all
+          TREE=$(git write-tree)
+          git config user.email security-advisories@ocaml.org
+          git config user.name "OCaml Security Response Team"
+          COMMIT=$(git commit-tree "$TREE" -p "$REF" -m "$(date --utc --rfc-3339=seconds) ($GITHUB_SHA)")
+          git push origin $COMMIT:$BRANCH
