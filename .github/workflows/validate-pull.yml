@@ -24,10 +24,17 @@ jobs:
       - name: Install advisories
         run: opam pin add --confirm-level=unsafe-yes https://github.com/hannesm/advisories.git
 
+      - name: Fetch OSV schema
+        run: curl -OL https://raw.githubusercontent.com/ossf/osv-schema/refs/heads/main/validation/schema.json
+
+      - name: Install check-jsonschema
+        run: apt install python3-check-jsonschema
+
       - name: Check and run advisories
         run: |
           git fetch origin ${{ github.base_ref }}
           CHANGED_FILES=$(git diff --name-only origin/${{ github.base_ref }}...HEAD | grep advisories)
           for x in $CHANGED_FILES; do
-            opam exec -- advisories.exe $x
+            opam exec -- advisories.exe $x > $x.json
+            check-jsonschema --schemafile ./schema.json $x.json
           done
