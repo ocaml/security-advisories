@@ -1,1 +1,87 @@
-{"schema_version":"1.7.4","id":"OSEC-2022-01","modified":"2026-01-13T12:00:00Z","published":"2022-12-07T00:00:00Z","aliases":["CVE-2022-46770"],"summary":"Infinite loop in console output on xen","details":"## Background\n\nMirageOS is a library operating system using cooperative multitasking, which can be executed as a guest of the Xen hypervisor. Output on the console is performed via the Xen console protocol.\nProblem Description\n\nSince MirageOS moved from PV mode to PVH, and thus replacing Mini-OS with solo5, there was an issue in the solo5 code which failed to properly account the already written bytes on the console. This only occurs if the output to be performed does not fit in a single output buffer (2048 bytes on Xen).\n\nThe code in question set the number of bytes written to the last written count (written = output_some(buf)), instead of increasing the written count (written += output_some(buf)).\n\n## Impact\n\nConsole output may lead to an infinite loop, endlessly printing data onto the console.\n\nA prominent unikernel is the Qubes MirageOS firewall, which prints some input packets onto the console. This can lead to a remote denial of service vulnerability, since any client could send a malformed and sufficiently big network packet.\n\n## Solution\n\nThe solution is to fix the console output code in solo5, as done in https://github.com/Solo5/solo5/pull/538/commits/099be86f0a17a619fcadbb970bb9e511d28d3cd8\n\n## Timeline\n\n- 2022-12-04: initial report by Krzysztof Burghardt https://github.com/mirage/qubes-mirage-firewall/issues/166\n- 2022-12-04: investigation by Hannes Mehnert and Pierre Alain\n- 2022-12-05: initial fix by Pierre Alain https://github.com/Solo5/solo5/pull/538\n- 2022-12-05: review of fix by Thomas Leonard\n- 2022-12-07: release of fixed packages and security advisory","affected":[{"package":{"ecosystem":"opam","name":"solo5","purl":"pkg:opam/solo5"},"ranges":[{"type":"ECOSYSTEM","events":[{"introduced":"0.6.6"},{"fixed":"0.7.5"}]},{"type":"GIT","repo":"git+https://github.com/mirage/mirage-xen","events":[{"fixed":"f86e173922233568158c605ab98add623bedf948"},{"introduced":"f4b47d11983bf8f32aaf4ec496a045c35e4e582f"}]}],"versions":["pkg:opam/solo5@0.7.0?repository=git%2Bhttps:%2F%2Fgithub.com%2Focaml%2Fopam-repository-archive.git","pkg:opam/solo5@0.7.1?repository=git%2Bhttps:%2F%2Fgithub.com%2Focaml%2Fopam-repository-archive.git","pkg:opam/solo5@0.7.2?repository=git%2Bhttps:%2F%2Fgithub.com%2Focaml%2Fopam-repository-archive.git","pkg:opam/solo5@0.7.3?repository=git%2Bhttps:%2F%2Fgithub.com%2Focaml%2Fopam-repository-archive.git","pkg:opam/solo5@0.7.4?repository=git%2Bhttps:%2F%2Fgithub.com%2Focaml%2Fopam-repository-archive.git"],"ecosystem_specific":{"opam_constraint":"solo5 {>= \"0.6.6\" & < \"0.7.5\"}"}}],"references":[{"type":"FIX","url":"https://github.com/Solo5/solo5/pull/538"},{"type":"ADVISORY","url":"https://mirageos.org/blog/MSA03"}],"credits":[{"name":"Krzysztof Burghardt","type":"REPORTER"},{"name":"Pierre Alain","type":"REMEDIATION_DEVELOPER"},{"name":"Thomas Leonard","type":"REMEDIATION_REVIEWER"},{"name":"Hannes Mehnert","type":"REMEDIATION_REVIEWER"}],"database_specific":{"osv":"https://github.com/ocaml/security-advisories/tree/generated-osv/2022/OSEC-2022-01.json","human_link":"https://github.com/ocaml/security-advisories/tree/main/advisories/2022/OSEC-2022-01.md"}}
+{
+  "schema_version": "1.7.4",
+  "id": "OSEC-2022-01",
+  "modified": "2026-01-13T12:00:00Z",
+  "published": "2022-12-07T00:00:00Z",
+  "aliases": [
+    "CVE-2022-46770"
+  ],
+  "summary": "Infinite loop in console output on xen",
+  "details": "## Background\n\nMirageOS is a library operating system using cooperative multitasking, which can be executed as a guest of the Xen hypervisor. Output on the console is performed via the Xen console protocol.\nProblem Description\n\nSince MirageOS moved from PV mode to PVH, and thus replacing Mini-OS with solo5, there was an issue in the solo5 code which failed to properly account the already written bytes on the console. This only occurs if the output to be performed does not fit in a single output buffer (2048 bytes on Xen).\n\nThe code in question set the number of bytes written to the last written count (written = output_some(buf)), instead of increasing the written count (written += output_some(buf)).\n\n## Impact\n\nConsole output may lead to an infinite loop, endlessly printing data onto the console.\n\nA prominent unikernel is the Qubes MirageOS firewall, which prints some input packets onto the console. This can lead to a remote denial of service vulnerability, since any client could send a malformed and sufficiently big network packet.\n\n## Solution\n\nThe solution is to fix the console output code in solo5, as done in https://github.com/Solo5/solo5/pull/538/commits/099be86f0a17a619fcadbb970bb9e511d28d3cd8\n\n## Timeline\n\n- 2022-12-04: initial report by Krzysztof Burghardt https://github.com/mirage/qubes-mirage-firewall/issues/166\n- 2022-12-04: investigation by Hannes Mehnert and Pierre Alain\n- 2022-12-05: initial fix by Pierre Alain https://github.com/Solo5/solo5/pull/538\n- 2022-12-05: review of fix by Thomas Leonard\n- 2022-12-07: release of fixed packages and security advisory",
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "opam",
+        "name": "solo5",
+        "purl": "pkg:opam/solo5"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0.6.6"
+            },
+            {
+              "fixed": "0.7.5"
+            }
+          ]
+        },
+        {
+          "type": "GIT",
+          "repo": "git+https://github.com/mirage/mirage-xen",
+          "events": [
+            {
+              "fixed": "f86e173922233568158c605ab98add623bedf948"
+            },
+            {
+              "introduced": "f4b47d11983bf8f32aaf4ec496a045c35e4e582f"
+            }
+          ]
+        }
+      ],
+      "versions": [
+        "pkg:opam/solo5@0.7.0?repository=git%2Bhttps:%2F%2Fgithub.com%2Focaml%2Fopam-repository-archive.git",
+        "pkg:opam/solo5@0.7.1?repository=git%2Bhttps:%2F%2Fgithub.com%2Focaml%2Fopam-repository-archive.git",
+        "pkg:opam/solo5@0.7.2?repository=git%2Bhttps:%2F%2Fgithub.com%2Focaml%2Fopam-repository-archive.git",
+        "pkg:opam/solo5@0.7.3?repository=git%2Bhttps:%2F%2Fgithub.com%2Focaml%2Fopam-repository-archive.git",
+        "pkg:opam/solo5@0.7.4?repository=git%2Bhttps:%2F%2Fgithub.com%2Focaml%2Fopam-repository-archive.git"
+      ],
+      "ecosystem_specific": {
+        "opam_constraint": "solo5 {>= \"0.6.6\" & < \"0.7.5\"}"
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "FIX",
+      "url": "https://github.com/Solo5/solo5/pull/538"
+    },
+    {
+      "type": "ADVISORY",
+      "url": "https://mirageos.org/blog/MSA03"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Krzysztof Burghardt",
+      "type": "REPORTER"
+    },
+    {
+      "name": "Pierre Alain",
+      "type": "REMEDIATION_DEVELOPER"
+    },
+    {
+      "name": "Thomas Leonard",
+      "type": "REMEDIATION_REVIEWER"
+    },
+    {
+      "name": "Hannes Mehnert",
+      "type": "REMEDIATION_REVIEWER"
+    }
+  ],
+  "database_specific": {
+    "osv": "https://github.com/ocaml/security-advisories/tree/generated-osv/2022/OSEC-2022-01.json",
+    "human_link": "https://github.com/ocaml/security-advisories/tree/main/advisories/2022/OSEC-2022-01.md"
+  }
+}
