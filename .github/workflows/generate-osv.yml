@@ -39,7 +39,7 @@ jobs:
           git fetch origin ${{ github.base_ref }}
           for x in $(find advisories/ -type f); do
             echo "Converting advisory $x"
-            opam exec -- advisories $x > $x.json
+            opam exec -- advisories $x | jq > $x.json
             echo "Validating advisory $x.json"
             check-jsonschema --schemafile ./schema.json $x.json
             echo "Done with exit code $?"
