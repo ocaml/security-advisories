@@ -41,11 +41,11 @@
         }
       ],
       "versions": [
-        "pkg:opam/solo5@0.7.0?repository=git%2Bhttps:%2F%2Fgithub.com%2Focaml%2Fopam-repository-archive.git",
-        "pkg:opam/solo5@0.7.1?repository=git%2Bhttps:%2F%2Fgithub.com%2Focaml%2Fopam-repository-archive.git",
-        "pkg:opam/solo5@0.7.2?repository=git%2Bhttps:%2F%2Fgithub.com%2Focaml%2Fopam-repository-archive.git",
-        "pkg:opam/solo5@0.7.3?repository=git%2Bhttps:%2F%2Fgithub.com%2Focaml%2Fopam-repository-archive.git",
-        "pkg:opam/solo5@0.7.4?repository=git%2Bhttps:%2F%2Fgithub.com%2Focaml%2Fopam-repository-archive.git"
+        "0.7.0",
+        "0.7.1",
+        "0.7.2",
+        "0.7.3",
+        "0.7.4"
       ],
       "ecosystem_specific": {
         "opam_constraint": "solo5 {>= \"0.6.6\" & < \"0.7.5\"}"

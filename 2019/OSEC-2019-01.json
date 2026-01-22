@@ -38,7 +38,7 @@
         }
       ],
       "versions": [
-        "pkg:opam/netchannel@1.10.0?repository=git%2Bhttps:%2F%2Fgithub.com%2Focaml%2Fopam-repository-archive.git"
+        "1.10.0"
       ],
       "ecosystem_specific": {
         "opam_constraint": "netchannel {>= \"1.10.0\" & < \"1.10.1\"}"

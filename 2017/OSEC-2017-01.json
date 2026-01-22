@@ -41,8 +41,8 @@
         }
       ],
       "versions": [
-        "pkg:opam/ocaml@4.04.0",
-        "pkg:opam/ocaml@4.04.1"
+        "4.04.0",
+        "4.04.1"
       ],
       "ecosystem_specific": {
         "opam_constraint": "ocaml {>= \"4.04\" & < \"4.04.2\"}"

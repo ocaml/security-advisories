@@ -38,15 +38,15 @@
         }
       ],
       "versions": [
-        "pkg:opam/mirage-net-xen@0.9.0?repository=git%2Bhttps:%2F%2Fgithub.com%2Focaml%2Fopam-repository-archive.git",
-        "pkg:opam/mirage-net-xen@1.1.0?repository=git%2Bhttps:%2F%2Fgithub.com%2Focaml%2Fopam-repository-archive.git",
-        "pkg:opam/mirage-net-xen@1.1.1?repository=git%2Bhttps:%2F%2Fgithub.com%2Focaml%2Fopam-repository-archive.git",
-        "pkg:opam/mirage-net-xen@1.1.2?repository=git%2Bhttps:%2F%2Fgithub.com%2Focaml%2Fopam-repository-archive.git",
-        "pkg:opam/mirage-net-xen@1.1.3?repository=git%2Bhttps:%2F%2Fgithub.com%2Focaml%2Fopam-repository-archive.git",
-        "pkg:opam/mirage-net-xen@1.2.0?repository=git%2Bhttps:%2F%2Fgithub.com%2Focaml%2Fopam-repository-archive.git",
-        "pkg:opam/mirage-net-xen@1.3.0?repository=git%2Bhttps:%2F%2Fgithub.com%2Focaml%2Fopam-repository-archive.git",
-        "pkg:opam/mirage-net-xen@1.4.0?repository=git%2Bhttps:%2F%2Fgithub.com%2Focaml%2Fopam-repository-archive.git",
-        "pkg:opam/mirage-net-xen@1.4.1?repository=git%2Bhttps:%2F%2Fgithub.com%2Focaml%2Fopam-repository-archive.git"
+        "0.9.0",
+        "1.1.0",
+        "1.1.1",
+        "1.1.2",
+        "1.1.3",
+        "1.2.0",
+        "1.3.0",
+        "1.4.0",
+        "1.4.1"
       ],
       "ecosystem_specific": {
         "opam_constraint": "mirage-net-xen {< \"1.4.2\"}"
