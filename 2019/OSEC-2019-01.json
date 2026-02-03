@@ -5,12 +5,6 @@
   "published": "2019-03-21T00:00:00Z",
   "summary": "Memory disclosure in mirage-net-xen",
   "details": "## Background\n\nMirageOS is a library operating system using cooperative multitasking, which can be executed as a guest of the Xen hypervisor. Virtual devices, such as a network device, share memory between MirageOS and the hypervisor. To maintain adequate performance, the virtual device managing network communication between MirageOS and the Xen hypervisor maintains a shared pool of pages and reuses them for write requests.\n\n## Problem Description\n\nIn version 1.10.0 of netchannel, the API for handling network requests changed to provide higher-level network code with an interface for writing into memory directly. As part of this change, code paths which exposed memory taken from the shared page pool did not ensure that previous data had been cleared from the buffer. This error resulted in memory which the user did not overwrite staying resident in the buffer, and potentially being sent as part of unrelated network communication.\n\nThe mirage-tcpip library, which provides interfaces for higher-level operations like IPv4 and TCP header writes, assumes that buffers into which it writes have been zeroed, and therefore may not explicitly write some fields which are always zero. As a result, some packets written with netchannel v1.10.0 which were passed to mirage-tcpip with nonzero data will have incorrect checksums calculated and will be discarded by the receiver.\n\n## Impact\n\nThis issue discloses memory intended for another recipient and corrupts packets. Only version 1.10.0 of netchannel is affected. Version 1.10.1 fixes this issue.\n\nVersion 1.10.0 was available for less than one month and many upstream users had not yet updated their own API calls to use it. In particular, no version of qubes-mirage-firewall or its dependency mirage-nat compatible with version 1.10.0 was released.\n\n## Solution\n\nTransmitting corrupt data and disclosing memory is fixed in version 1.10.1.",
-  "severity": [
-    {
-      "type": "CVSS_V3",
-      "score": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:L/A:N"
-    }
-  ],
   "affected": [
     {
       "package": {
@@ -81,9 +75,6 @@
   ],
   "database_specific": {
     "osv": "https://github.com/ocaml/security-advisories/tree/generated-osv/2019/OSEC-2019-01.json",
-    "human_link": "https://github.com/ocaml/security-advisories/tree/main/advisories/2019/OSEC-2019-01.md",
-    "cwe": [
-      "CWE-908"
-    ]
+    "human_link": "https://github.com/ocaml/security-advisories/tree/main/advisories/2019/OSEC-2019-01.md"
   }
 }
