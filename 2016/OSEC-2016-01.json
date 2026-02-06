@@ -29,7 +29,7 @@
         },
         {
           "type": "GIT",
-          "repo": "git+https://github.com/ocaml/ocaml",
+          "repo": "https://github.com/ocaml/ocaml",
           "events": [
             {
               "introduced": "0"

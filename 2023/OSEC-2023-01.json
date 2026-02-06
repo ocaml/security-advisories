@@ -26,7 +26,7 @@
         },
         {
           "type": "GIT",
-          "repo": "git+https://github.com/ocaml/opam",
+          "repo": "https://github.com/ocaml/opam",
           "events": [
             {
               "fixed": "7a538fd0bf3b3956d84bb25d0f6b1126fa177595"

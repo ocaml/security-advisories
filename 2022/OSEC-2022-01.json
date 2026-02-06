@@ -29,7 +29,7 @@
         },
         {
           "type": "GIT",
-          "repo": "git+https://github.com/mirage/mirage-xen",
+          "repo": "https://github.com/mirage/mirage-xen",
           "events": [
             {
               "fixed": "f86e173922233568158c605ab98add623bedf948"

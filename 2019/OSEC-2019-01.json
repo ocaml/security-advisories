@@ -26,7 +26,7 @@
         },
         {
           "type": "GIT",
-          "repo": "git+https://github.com/mirage/mirage-net-xen",
+          "repo": "https://github.com/mirage/mirage-net-xen",
           "events": [
             {
               "fixed": "bdfc658f139e39cdf1b8dada013b91df67a8e26a"
