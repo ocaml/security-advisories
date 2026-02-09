@@ -5,6 +5,12 @@
   "published": "2016-05-03T00:00:00Z",
   "summary": "Memory disclosure in mirage-net-xen",
   "details": "## Background\n\nMirageOS is a library operating system using cooperative multitasking, which can be executed as a guest of the Xen hypervisor. Virtual devices, such as a network device, share memory between MirageOS and the hypervisor. MirageOS allocates and grants the hypervisor access to a ringbuffer containing pages to be sent on the network device, and another ringbuffer with pages to be filled with received data. A write on the MirageOS side consists of filling the page with the packet data, submitting a write request to the hypervisor, and awaiting a response from the hypervisor. To correlate the request with the response, a 16bit identifier is used.\n\n## Problem Description\n\nGenerating this 16bit identifier was not done in a unique manner. When multiple pages share an identifier, and are requested to be transmitted via the wire, the first successful response will mark all pages with this identifier free, even those still waiting to be transmitted. Once marked free, the MirageOS application fills the page for another chunk of data. This leads to corrupted packets being sent, and can lead to disclosure of memory intended for another recipient.\n\n## Impact\n\nThis issue discloses memory intended for another recipient. All versions before mirage-net-xen 1.4.2 are affected. The receiving side uses a similar mechanism, which may lead to corrupted incoming data (eventually even mutated while being processed).\n\nVersion 1.5.0, released on 8th January, already assigns unique identifiers for transmission. Received pages are copied into freshly allocated buffers before passed to the next layer. When 1.5.0 was released, the impact was not clear to us. Version 1.6.1 now additionally ensures that received pages have a unique identifier.\n\n## Solution\n\nThe unique identifier is now generated in a unique manner using a monotonic counter.\n\nTransmitting corrupt data and disclosing memory is fixed in versions 1.4.2 and above.",
+  "severity": [
+    {
+      "type": "CVSS_V3",
+      "score": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:H/I:L/A:N"
+    }
+  ],
   "affected": [
     {
       "package": {
@@ -91,6 +97,9 @@
   ],
   "database_specific": {
     "osv": "https://github.com/ocaml/security-advisories/tree/generated-osv/2016/OSEC-2016-02.json",
-    "human_link": "https://github.com/ocaml/security-advisories/tree/main/advisories/2016/OSEC-2016-02.md"
+    "human_link": "https://github.com/ocaml/security-advisories/tree/main/advisories/2016/OSEC-2016-02.md",
+    "cwe": [
+      "CWE-416"
+    ]
   }
 }

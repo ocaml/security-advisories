@@ -8,6 +8,12 @@
   ],
   "summary": "Local privilege escalation issue with ocaml binaries",
   "details": "## Description\n\nInsufficient sanitisation in the OCaml compiler versions 4.04.0 and 4.04.1 allows external code to be executed with raised privilege in binaries marked as setuid, by setting the CAML_CPLUGINS, CAML_NATIVE_CPLUGINS, or CAML_BYTE_CPLUGINS environment variable.",
+  "severity": [
+    {
+      "type": "CVSS_V3",
+      "score": "CVSS:3.0/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H"
+    }
+  ],
   "affected": [
     {
       "package": {
@@ -71,6 +77,9 @@
   ],
   "database_specific": {
     "osv": "https://github.com/ocaml/security-advisories/tree/generated-osv/2017/OSEC-2017-01.json",
-    "human_link": "https://github.com/ocaml/security-advisories/tree/main/advisories/2017/OSEC-2017-01.md"
+    "human_link": "https://github.com/ocaml/security-advisories/tree/main/advisories/2017/OSEC-2017-01.md",
+    "cwe": [
+      "CWE-269"
+    ]
   }
 }

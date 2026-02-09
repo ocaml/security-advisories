@@ -8,6 +8,12 @@
   ],
   "summary": "Infinite loop in console output on xen",
   "details": "## Background\n\nMirageOS is a library operating system using cooperative multitasking, which can be executed as a guest of the Xen hypervisor. Output on the console is performed via the Xen console protocol.\nProblem Description\n\nSince MirageOS moved from PV mode to PVH, and thus replacing Mini-OS with solo5, there was an issue in the solo5 code which failed to properly account the already written bytes on the console. This only occurs if the output to be performed does not fit in a single output buffer (2048 bytes on Xen).\n\nThe code in question set the number of bytes written to the last written count (written = output_some(buf)), instead of increasing the written count (written += output_some(buf)).\n\n## Impact\n\nConsole output may lead to an infinite loop, endlessly printing data onto the console.\n\nA prominent unikernel is the Qubes MirageOS firewall, which prints some input packets onto the console. This can lead to a remote denial of service vulnerability, since any client could send a malformed and sufficiently big network packet.\n\n## Solution\n\nThe solution is to fix the console output code in solo5, as done in https://github.com/Solo5/solo5/pull/538/commits/099be86f0a17a619fcadbb970bb9e511d28d3cd8\n\n## Timeline\n\n- 2022-12-04: initial report by Krzysztof Burghardt https://github.com/mirage/qubes-mirage-firewall/issues/166\n- 2022-12-04: investigation by Hannes Mehnert and Pierre Alain\n- 2022-12-05: initial fix by Pierre Alain https://github.com/Solo5/solo5/pull/538\n- 2022-12-05: review of fix by Thomas Leonard\n- 2022-12-07: release of fixed packages and security advisory",
+  "severity": [
+    {
+      "type": "CVSS_V3",
+      "score": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H"
+    }
+  ],
   "affected": [
     {
       "package": {
@@ -82,6 +88,9 @@
   ],
   "database_specific": {
     "osv": "https://github.com/ocaml/security-advisories/tree/generated-osv/2022/OSEC-2022-01.json",
-    "human_link": "https://github.com/ocaml/security-advisories/tree/main/advisories/2022/OSEC-2022-01.md"
+    "human_link": "https://github.com/ocaml/security-advisories/tree/main/advisories/2022/OSEC-2022-01.md",
+    "cwe": [
+      "CWE-835"
+    ]
   }
 }

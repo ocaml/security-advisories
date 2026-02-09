@@ -8,6 +8,12 @@
   ],
   "summary": "Buffer overflow and information leak in OCaml < 4.03.0",
   "details": "## Bug description\n\nOCaml versions 4.02.3 and earlier have a runtime bug that, on 64-bit platforms, causes sizes arguments to an internal memmove call to be sign-extended from 32 to 64-bits before being passed to the memmove function.\n\nThis leads arguments between 2GiB and 4GiB to be interpreted as larger than they are (specifically, a bit below 2^64), causing a buffer overflow.\n\nArguments between 4GiB and 6GiB are interpreted as 4GiB smaller than they should be, causing a possible information leak.\n\nThis commit fixes the bug:\nhttps://github.com/ocaml/ocaml/commit/659615c7b100a89eafe6253e7a5b9d84d0e8df74#diff-a97df53e3ebc59bb457191b496c90762\nThe function caml_bit_string is called indirectly from such functions as String.copy. String.copy for instance is supposed to be a \"safe\" function for which OCaml's memory safety guarantees apply.",
+  "severity": [
+    {
+      "type": "CVSS_V3",
+      "score": "CVSS:3.0/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:N/A:H"
+    }
+  ],
   "affected": [
     {
       "package": {
@@ -93,6 +99,10 @@
   ],
   "database_specific": {
     "osv": "https://github.com/ocaml/security-advisories/tree/generated-osv/2016/OSEC-2016-01.json",
-    "human_link": "https://github.com/ocaml/security-advisories/tree/main/advisories/2016/OSEC-2016-01.md"
+    "human_link": "https://github.com/ocaml/security-advisories/tree/main/advisories/2016/OSEC-2016-01.md",
+    "cwe": [
+      "CWE-119",
+      "CWE-200"
+    ]
   }
 }

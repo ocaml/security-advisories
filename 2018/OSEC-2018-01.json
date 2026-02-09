@@ -128,6 +128,9 @@
   ],
   "database_specific": {
     "osv": "https://github.com/ocaml/security-advisories/tree/generated-osv/2018/OSEC-2018-01.json",
-    "human_link": "https://github.com/ocaml/security-advisories/tree/main/advisories/2018/OSEC-2018-01.md"
+    "human_link": "https://github.com/ocaml/security-advisories/tree/main/advisories/2018/OSEC-2018-01.md",
+    "cwe": [
+      "CWE-190"
+    ]
   }
 }
