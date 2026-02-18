@@ -1,7 +1,7 @@
 {
   "schema_version": "1.7.4",
   "id": "OSEC-2022-01",
-  "modified": "2026-01-13T12:00:00Z",
+  "modified": "2026-02-18T09:30:00Z",
   "published": "2022-12-07T00:00:00Z",
   "aliases": [
     "CVE-2022-46770"
@@ -35,10 +35,10 @@
         },
         {
           "type": "GIT",
-          "repo": "https://github.com/mirage/mirage-xen",
+          "repo": "https://github.com/solo5/solo5",
           "events": [
             {
-              "fixed": "f86e173922233568158c605ab98add623bedf948"
+              "fixed": "099be86f0a17a619fcadbb970bb9e511d28d3cd8"
             },
             {
               "introduced": "f4b47d11983bf8f32aaf4ec496a045c35e4e582f"
