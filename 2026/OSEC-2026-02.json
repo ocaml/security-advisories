@@ -1,0 +1,100 @@
+{
+  "schema_version": "1.7.4",
+  "id": "OSEC-2026-02",
+  "modified": "2026-02-18T12:00:00Z",
+  "published": "2026-02-18T12:00:00Z",
+  "summary": "ARP unbounded memory usage",
+  "details": "## Background\n\nMirage's implementation of the ARP protocol (RFC826) caches ARP replies to construct an IPv4 address -> MAC address cache. This cache is long-lived (effectively global), and also contains pending ARP requests, which are replaced by the reply, or deleted after a timeout. ARP replies that do not match any entry in the ARP cache are ignored (dropped).\n\nThe maximum amount of memory that a Solo5 unikernel can be assigned is 4GiB (see X86_GUEST_MAX_SIZE and AARCH64_MMIO_BASE).\n\n## Problem description\n\nThere are no no size constraints on the cache, and with 2^32 IPv4 addresses, it can exceed the maximum amount of memory that can be allocated by a unikernel if an attacker has Layer-2 access to that unikernel and can spoof arbitrary IP addresses. An attacker also needs to trick the unikernel into sending out an ARP query (ARP replies that don't have a corresponding Pending or Dynamic entry in the ARP table are ignored), this can be done by spoofing an ICMP echo request for example. However while attempting to develop an exploit for this another vulnerability was discovered (reported separately).\n\n## Impact\n\nAll versions of 'arp' are affected, and this module is typically used by a unikernel that provides network services. An affected unikernel can crash with an Out of memory condition. Unikernels that do not have network devices are not affected.\n\n## Workaround\n\nDevices on the same network/bridge as a unikernel should have firewall rules (on their TAP devices) that prevent sending ARP packets with IPv4 addresses that the unikernel doesn't own (although this becomes difficult to enforce if DHCP is used).\n\nUnikernel orchestrators can be configured to restart unikernels on crash, although you'd still lose any state that was in memory.\n\n## Solution\n\nUse a cache with a fixed upper bound on size, e.g. a LRU cache that drops old entries.\n\n## Timeline\n\n2025-05-23: issue discovered by Edwin Török while reviewing code to debug another OOM crash as part of the HACKSAT25 challenge\n2025-05-28: issue reported to security@mirage.io\n2025-10-20: arp 4.1.0 was released\n2026-02-18: security advisory was published",
+  "severity": [
+    {
+      "type": "CVSS_V3",
+      "score": "CVSS:3.0/AV:A/AC:L/PR:N/UI:N/S:C/C:N/I:N/A:H"
+    }
+  ],
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "opam",
+        "name": "arp",
+        "purl": "pkg:opam/arp"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "4.1.0"
+            }
+          ]
+        },
+        {
+          "type": "GIT",
+          "repo": "https://github.com/mirage/arp",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "a700d9f139a387839172dde816660472023cb13f"
+            }
+          ]
+        }
+      ],
+      "versions": [
+        "0.1.1",
+        "0.2.0",
+        "0.2.1",
+        "0.2.2",
+        "0.2.3",
+        "1.0.0",
+        "2.0.0",
+        "2.1.0",
+        "2.2.0",
+        "2.2.1",
+        "2.3.1",
+        "2.3.2",
+        "3.0.0",
+        "3.1.0",
+        "3.1.1",
+        "4.0.0"
+      ],
+      "ecosystem_specific": {
+        "opam_constraint": "arp {< \"4.1.0\"}"
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "FIX",
+      "url": "https://github.com/mirage/arp/pull/35"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Edwin Török",
+      "type": "REPORTER"
+    },
+    {
+      "name": "Edwin Török",
+      "type": "REMEDIATION_DEVELOPER"
+    },
+    {
+      "name": "Hannes Mehnert",
+      "type": "REMEDIATION_REVIEWER"
+    },
+    {
+      "name": "Romain Calascibetta",
+      "type": "REMEDIATION_REVIEWER"
+    }
+  ],
+  "database_specific": {
+    "osv": "https://github.com/ocaml/security-advisories/tree/generated-osv/2026/OSEC-2026-02.json",
+    "human_link": "https://github.com/ocaml/security-advisories/tree/main/advisories/2026/OSEC-2026-02.md",
+    "cwe": [
+      "CWE-770"
+    ]
+  }
+}
