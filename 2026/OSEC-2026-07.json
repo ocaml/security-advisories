@@ -1,0 +1,128 @@
+{
+  "schema_version": "1.7.4",
+  "id": "OSEC-2026-07",
+  "modified": "2026-05-20T13:50:00Z",
+  "published": "2026-05-20T13:50:00Z",
+  "aliases": [
+    "CVE-2026-45389"
+  ],
+  "summary": "TLS-server does insufficient client certificate checks (missing KeyUsage and ExtendedKeyUsage validation)",
+  "details": "The TLS server implementation does not validate the KeyUsage and ExtendedKeyUsage extensions of client certificates when mutually authenticated TLS is requested. This can lead to impersonation with a certificate issued to a server.\n\n## Scenario\n\nAn operations engineer enables mTLS on the admin endpoint of a banking service. The setup is canonical: provide an `authenticator` on the `ocaml-tls` listener. She believes the gate is now set: only certificates issued under the corporate root, intended for client authentication, can authenticate at the admin endpoint.\n\nAn attacker inside the same corporate trust domain holds the legitimate TLS server cert for some internal HTTPS service they administer. The cert is real, signed by the corporate root, valid, not revoked. Its Extended Key Usage extension lists `id-kp-serverAuth` and nothing else — the cert was issued for serving HTTPS, not for authenticating clients. The X.509 RFC says exactly that distinction: a cert's role is constrained by its EKU, and a serverAuth-only cert is not authorised to act as a client.\n\nThe attacker presents that cert to the bank's `ocaml-tls` mTLS listener. The hook fires, the chain validates against the corporate root. The `ocaml-tls` library's does neither check that the presented certificate includes `digitalSignature` in its keyUsage, neither looks that `clientAuth` is present in the ExtendedKeyUsage. The handshake completes. The attacker is now authenticated as a client at the bank's admin endpoint, holding a cert the corporate CA never authorised for client identity. Every server cert under the same trust store is an mTLS client cert at this listener — with no further coordination, no compromise of the CA, and no compromise of any legitimate client.\n\nThe catastrophic deployment shape is the operator who puts Mozilla's public-PKI trust store on the mTLS-server side. There, every public TLS server certificate in the world — every Let's Encrypt cert, every DigiCert cert, anything an attacker can buy or freely issue for any domain they control — becomes an mTLS client cert at the listener, provided the application authorises identities by chain-validity alone rather than by post-validation CN/SAN gating. That branch reaches CVSS 9.1; the realistic dominant case is the corporate-internal-CA shape at 7.4.\n\n## Attack\n\nThree actors: **Operator** (deploys ocaml-tls with mTLS for access control), **Attacker** (holds a CA-signed TLS server cert under a CA the operator's mTLS listener trusts), **Server** (the ocaml-tls listener serving the admin endpoint).\n\n```\n    Corporate CA (in ocaml-tls trust store; also issues the Operator's internal HTTPS server certs)\n        │\n        ├──▶ Operator's internal HTTPS service\n        │      cert: EKU={serverAuth}, used legitimately as TLS server\n        │\n        └──▶ Attacker (admins one of those internal HTTPS services)\n               cert: EKU={serverAuth} (legitimate)\n               key:  in attacker's possession (legitimately)\n\n    Attacker presents own server cert as a client cert to:\n    Operator's ocaml-tls mTLS listener  →  HTTP 200 OK\n```\n\nSequence:\n\n1. Operator runs ocaml-tls with `authenticator = Some X509.Authenticator.chain_of_trust <internal root CA>`.\n2. Attacker initiates a TLS handshake with the listener, presenting their existing serverAuth-only leaf in the `Certificate` message.\n3. `validateCerts` (`handshake_server.ml`) or `answerClientCertificate` (`handshake_server13.ml`) call `validateChain`, which passes.\n4. `CertificateVerify` arrives, validates. Handshake completes.\n5. WAI delivers the HTTP request to the application. The application reads the cert subject (CN, SAN) and treats it as the authenticated client identity for downstream authorization, audit logging, session binding.\n\nAttack properties:\n\n- The attacker needs a CA-signed leaf with EKU `{serverAuth}` only, chained to a CA the listener trusts for client auth. The realistic corporate-internal-CA case: the attacker holds a legitimate server cert under the same CA; AC:H. The catastrophic public-PKI-overlap case: any public CA-signed server cert; AC:L, score 9.1.\n- No private-key compromise of any legitimate client is required. No CA compromise. No collusion with the CA. The attacker uses their own legitimate cert in a role it was not issued for.\n- Out of scope: an attacker without a chain-valid cert at the listener's trust store. The CA-signed prerequisite is what holds AC above L in the dominant case.\n\n## Scope\n\nAffected: any `ocaml-tls` deployment that\n\n- enables mTLS via `authenticator = Some ...`, AND\n- trusts a CA whose issuance policy permits or has permitted certs with `EKU = {serverAuth}` only — which is essentially every CA, since serverAuth-only is the dominant TLS server cert shape.\n\nRealistic exposure shapes:\n\n- **Corporate internal CA** without strict client/server EKU separation. Any service holding a legitimate corporate-CA-issued TLS server cert can authenticate to any mTLS-gated API in the same trust domain. Service-mesh terminator → admin API; internal HTTPS service → internal mTLS microservice. The role boundary disappears within the trust domain. AC:H, CVSS 7.4.\n- **Public-PKI trust-store reuse**. The operator placed Mozilla's CA bundle (or any other public-web-PKI trust store) on the mTLS-server side. Every public TLS server cert in the world is now an mTLS client cert. AC:L, CVSS 9.1. Operator misconfiguration shape; uncommon but observed.\n\nNot in scope:\n\n- Deployments where `authenticator = None` (no mTLS).\n- Deployments where the application authorises identity by post-validation CN/SAN gating that the attacker's serverAuth-only cert cannot satisfy. The TLS layer accepts the attacker, but the app rejects on the next gate. This narrows the exposure but does not remove it — any `ocaml-tls` consumer relying on the TLS layer alone for identity is exposed.\n- Deployments that already check KeyUsage/ExtendedKeyUsage after the handshake completed (rare).\n\n## Timeline\n\n- 2026-04-24: vulnerability discovered\n- 2026-05-09: vulnerability reported to the OCaml security team\n- 2026-05-10: patch prepared\n- 2026-05-14: patch approved by reporter\n- 2026-05-20: ocaml-tls 2.1.0 released, security advisory published",
+  "severity": [
+    {
+      "type": "CVSS_V3",
+      "score": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:H/I:H/A:N"
+    }
+  ],
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "opam",
+        "name": "tls",
+        "purl": "pkg:opam/tls"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "2.1.0"
+            }
+          ]
+        },
+        {
+          "type": "GIT",
+          "repo": "https://github.com/mirleft/ocaml-tls",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "b1a598ef9be83a4f8b0f73a4e2d9730d50906049"
+            }
+          ]
+        }
+      ],
+      "versions": [
+        "0.1.0",
+        "0.2.0",
+        "0.3.0",
+        "0.4.0",
+        "0.5.0",
+        "0.6.0",
+        "0.7.0",
+        "0.7.1",
+        "0.8.0",
+        "0.9.0",
+        "0.9.1",
+        "0.9.2",
+        "0.9.3",
+        "0.10.1",
+        "0.10.2",
+        "0.10.3",
+        "0.10.4",
+        "0.10.5",
+        "0.10.6",
+        "0.11.0",
+        "0.11.1",
+        "0.12.0",
+        "0.12.1",
+        "0.12.2",
+        "0.12.3",
+        "0.12.4",
+        "0.12.5",
+        "0.12.6",
+        "0.12.7",
+        "0.12.8",
+        "0.13.0",
+        "0.13.1",
+        "0.13.2",
+        "0.14.0",
+        "0.14.1",
+        "0.15.0",
+        "0.15.1",
+        "0.15.2",
+        "0.15.3",
+        "0.15.4",
+        "0.16.0",
+        "0.17.0",
+        "0.17.1",
+        "0.17.3",
+        "0.17.4",
+        "0.17.5",
+        "1.0.0",
+        "1.0.2",
+        "1.0.4",
+        "2.0.0",
+        "2.0.1",
+        "2.0.2",
+        "2.0.3",
+        "2.0.4"
+      ],
+      "ecosystem_specific": {
+        "opam_constraint": "tls {< \"2.1.0\"}"
+      }
+    }
+  ],
+  "references": [],
+  "credits": [
+    {
+      "name": "Ben Smyth",
+      "type": "REPORTER"
+    },
+    {
+      "name": "Hannes Mehnert",
+      "type": "REMEDIATION_DEVELOPER"
+    }
+  ],
+  "database_specific": {
+    "osv": "https://github.com/ocaml/security-advisories/tree/generated-osv/2026/OSEC-2026-07.json",
+    "human_link": "https://github.com/ocaml/security-advisories/tree/main/advisories/2026/OSEC-2026-07.md",
+    "cwe": [
+      "CWE-295"
+    ]
+  }
+}

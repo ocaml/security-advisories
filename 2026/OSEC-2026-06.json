@@ -1,0 +1,128 @@
+{
+  "schema_version": "1.7.4",
+  "id": "OSEC-2026-06",
+  "modified": "2026-05-20T13:50:00Z",
+  "published": "2026-05-20T13:50:00Z",
+  "aliases": [
+    "CVE-2026-45388"
+  ],
+  "summary": "TLS-client (with TLS 1.3) does insufficient certificate checks (missing KeyUsage and ExtendedKeyUsage validation)",
+  "details": "The ocaml-TLS 1.3 client does not validate the KeyUsage and ExtendedKeyUsage extensions of the server certificate. This can lead to impersonation with a certificate issued to a client.\n\n## Scenario\n\nEvery employee at a major bank carries a smart card. The card holds a clientAuth certificate issued by the bank's corporate PKI: identifying the employee for VPN, for badge access, for signing emails. The certificate's Extended Key Usage field marks it \"TLS client, not TLS server\" — the bank's own CA states what the cert may and may not do. To an ocaml-tls TLS 1.3 client, the marking is invisible. A laptop pulled from a desk, a smart card left in a coffee shop, malware on a workstation — anyone holding any clientAuth cert from any CA in the trust store, with a SAN naming a hostname an ocaml-tls client connects to, impersonates that hostname as a TLS 1.3 server. The same hole catches public-CA misissuance, codeSigning certs with DNS SANs, S/MIME certs with DNS SANs. Any cert in any non-server class becomes a TLS 1.3 server cert.\n\nRFC 5280 §4.2.1.12 binds a cert with an Extended Key Usage extension to the indicated purposes; RFC 8446 §4.4.2.4 carries the constraint into TLS 1.3. ocaml-tls enforces it on its TLS 1.2 path\n— `validate_keyusage` in `handshake_client.ml:201` checks for `Server_auth`, wired to `answer_certificate_RSA` and `answer_certificate_DHE`. When TLS 1.3 was added, a separate `answer_certificate` was written in `handshake_client13.ml`; the EKU check was not ported.\n\n## Detailed description\n\nocaml-tls clients complete the TLS 1.3 handshake with a server presenting a leaf certificate whose Extended Key Usage extension omits `id-kp-serverAuth` (OID 1.3.6.1.5.5.7.3.1). The probe leaf carries `id-kp-clientAuth` (1.3.6.1.5.5.7.3.2) and `id-kp-codeSigning` (1.3.6.1.5.5.7.3.3) only — the cert was issued by its CA for purposes other than TLS server authentication. ocaml-tls accepts the cert, completes ECDHE, verifies CertificateVerify, and delivers application data.\n\nThe library has the correct EKU check, in `handshake_client.ml:201:validate_keyusage`. The TLS 1.3 entry point in `handshake_client13.ml:answer_certificate` is simply not wired to it. TLS 1.2 handshakes through `answer_certificate_RSA` and `answer_certificate_DHE` correctly reject a non-serverAuth cert; the same library accepts it on the TLS 1.3 path.\n\nA sibling finding reports the same class of gap for the KeyUsage extension.\n\n## Attack\n\nNumbered attack sequence:\n\n1. Attacker obtains a leaf cert from any CA in the victim's trust store, with EKU including any of `clientAuth`, `codeSigning`, `emailProtection`, etc. — and excluding `serverAuth`. Practical sources: commercial S/MIME CAs, code-signing CAs, internal corporate PKI that issues clientAuth certs, public-CA misissuance.\n2. Attacker stands up a TLS 1.3 server with that cert and binds the leaf's SAN hostname to a network position the victim's client will reach (DNS spoof, BGP hijack, captive portal, off-path redirect).\n3. ocaml-tls 1.3 client opens a handshake. Server presents the non-serverAuth cert in its `Certificate` message.\n4. `validate_chain` returns `Ok`. The TLS 1.3 path advances to`AwaitServerCertificateVerify13` without checking EKU.\n5. CertificateVerify is signed correctly (attacker holds the leaf's private key); signature verifies.\n6. Handshake completes. Application data flows over the attacker-authenticated session.\n\nASCII trace:\n\n    Attacker                     ocaml-tls client\n    --------                     ----------------\n    (holds a cert issued with\n     EKU=clientAuth + codeSigning\n     from a CA the victim trusts)\n    ServerHello ------------->\n    Certificate(EKU=¬serverAuth) -> validate_chain → Ok\n    CertificateVerify ---------> signature OK\n    Finished ----------------->\n                                 ACCEPT\n    {AppData} <------>           delivered to application\n\nAttack properties:\n\n- The CA-issuance boundary that normally separates \"may run a TLS server for this name\" from \"may sign email\" or \"may sign code\" is erased at the handshake.\n- Hostname binding (SAN) is enforced; the attacker still needs the SAN to match the connected hostname. CAs that issue clientAuth or codeSigning certs commonly bind hostnames in the SAN (corporate-PKI clientAuth certs frequently encode the workstation FQDN).\n- Public CA misissuance scenarios — accidentally dropping `serverAuth` from an EKU set, or shipping `id-kp-codeSigning` alongside SANs intended for TLS — are plausible failure modes given the cert-template surface area; we are not citing a specific documented incident here.\n\n## Scope\n\n**In scope.** All TLS 1.3 client connections through ocaml-tls using x509 cert validation against any trust anchor. Affected populations: MirageOS unikernels, Robur deployments, OCaml apps using `mirleft/ocaml-tls` for TLS 1.3 client sockets.\n\n**Trust model.** Production clients trust hundreds of CAs (Mozilla bundle, OS root store, corporate PKI). Many of those CAs legitimately issue certs for purposes other than TLS server auth — S/MIME, code signing, document signing, client auth. Per RFC 5280 §4.2.1.12 the leaf's EKU constrains what each specific cert may be used for. Loading the issuer is the baseline for any TLS handshake to validate at all; ignoring the leaf's EKU is the gap.\n\n**Not in scope.**\n\n- TLS 1.2 connections via the same library — `validate_keyusage` is wired to the TLS 1.2 paths and rejects non-serverAuth certs.\n- ocaml-tls server-side accepting client certs — separate code path, not exercised by this finding.\n- `mirage-crypto` / `nocrypto` — pure crypto primitives, not in the cert-validation path.\n- \"Stolen private key\" variants — out of scope; this finding requires only that the attacker hold a legitimately-issued cert for a non-server purpose, not that they compromise a serverAuth cert.\n\n## Timeline\n\n- 2026-04-18: vulnerability discovered\n- 2026-04-30: vulnerability reported to the OCaml security team\n- 2026-05-05: initial patch prepared\n- 2026-05-09: additional keyUsage vulnerability reported\n- 2026-05-10: final patch prepared\n- 2026-05-14: patch approved by reporter\n- 2026-05-20: ocaml-tls 2.1.0 released, security advisory published",
+  "severity": [
+    {
+      "type": "CVSS_V3",
+      "score": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:H/I:H/A:N"
+    }
+  ],
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "opam",
+        "name": "tls",
+        "purl": "pkg:opam/tls"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "2.1.0"
+            }
+          ]
+        },
+        {
+          "type": "GIT",
+          "repo": "https://github.com/mirleft/ocaml-tls",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "6a12247b3fbd747972ad2d35b74d9a89f6404952"
+            }
+          ]
+        }
+      ],
+      "versions": [
+        "0.1.0",
+        "0.2.0",
+        "0.3.0",
+        "0.4.0",
+        "0.5.0",
+        "0.6.0",
+        "0.7.0",
+        "0.7.1",
+        "0.8.0",
+        "0.9.0",
+        "0.9.1",
+        "0.9.2",
+        "0.9.3",
+        "0.10.1",
+        "0.10.2",
+        "0.10.3",
+        "0.10.4",
+        "0.10.5",
+        "0.10.6",
+        "0.11.0",
+        "0.11.1",
+        "0.12.0",
+        "0.12.1",
+        "0.12.2",
+        "0.12.3",
+        "0.12.4",
+        "0.12.5",
+        "0.12.6",
+        "0.12.7",
+        "0.12.8",
+        "0.13.0",
+        "0.13.1",
+        "0.13.2",
+        "0.14.0",
+        "0.14.1",
+        "0.15.0",
+        "0.15.1",
+        "0.15.2",
+        "0.15.3",
+        "0.15.4",
+        "0.16.0",
+        "0.17.0",
+        "0.17.1",
+        "0.17.3",
+        "0.17.4",
+        "0.17.5",
+        "1.0.0",
+        "1.0.2",
+        "1.0.4",
+        "2.0.0",
+        "2.0.1",
+        "2.0.2",
+        "2.0.3",
+        "2.0.4"
+      ],
+      "ecosystem_specific": {
+        "opam_constraint": "tls {< \"2.1.0\"}"
+      }
+    }
+  ],
+  "references": [],
+  "credits": [
+    {
+      "name": "Ben Smyth",
+      "type": "REPORTER"
+    },
+    {
+      "name": "Hannes Mehnert",
+      "type": "REMEDIATION_DEVELOPER"
+    }
+  ],
+  "database_specific": {
+    "osv": "https://github.com/ocaml/security-advisories/tree/generated-osv/2026/OSEC-2026-06.json",
+    "human_link": "https://github.com/ocaml/security-advisories/tree/main/advisories/2026/OSEC-2026-06.md",
+    "cwe": [
+      "CWE-295"
+    ]
+  }
+}
