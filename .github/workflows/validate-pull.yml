@@ -7,7 +7,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        ocaml-version: ["4.14.2"]
+        ocaml-version: ["4.14.3"]
         os: [ubuntu-latest]
 
     runs-on: ${{ matrix.os }}
