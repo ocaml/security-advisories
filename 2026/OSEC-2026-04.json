@@ -1,0 +1,165 @@
+{
+  "schema_version": "1.7.4",
+  "id": "OSEC-2026-04",
+  "modified": "2026-06-18T13:20:00Z",
+  "published": "2026-06-18T13:20:00Z",
+  "aliases": [
+    "CVE-2026-34353"
+  ],
+  "summary": "Bigarray.reshape integer overflow",
+  "details": "The function `caml_ba_reshape`, part of the OCaml runtime (in runtime/bigarray.c), had a missing check for integer overflow when computing the size to be allocated. This leads to a segmentation fault.\n\nAny application using `Bigarray.reshape` (or `reshape_N`) with untrusted and unchecked input can result in a segmentation fault.\n\n## Timeline\n\n- 2026-06-18 security advisory released\n- 2026-06-15 OCaml 4.14.4 released\n- 2026-04-16 Florian Angeletti backported the fix to the 4.14 branch\n- 2026-04-15 Stephen Dolan proposed fix https://github.com/ocaml/ocaml/pull/14691\n- 2026-03-18 Andriy Sultanov reported https://github.com/ocaml/ocaml/issues/14655",
+  "severity": [
+    {
+      "type": "CVSS_V3",
+      "score": "CVSS:3.1/AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:L/A:N"
+    }
+  ],
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "opam",
+        "name": "ocaml",
+        "purl": "pkg:opam/ocaml"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "4.14.4"
+            }
+          ]
+        },
+        {
+          "type": "GIT",
+          "repo": "https://github.com/ocaml/ocaml",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "1ec6b6e8ef9d30fc1d8bac71a6646c2ef78ea90b"
+            }
+          ]
+        }
+      ],
+      "versions": [
+        "3.07",
+        "3.07+1",
+        "3.07+2",
+        "3.08.0",
+        "3.08.1",
+        "3.08.2",
+        "3.08.3",
+        "3.08.4",
+        "3.09.0",
+        "3.09.1",
+        "3.09.2",
+        "3.09.3",
+        "3.10.0",
+        "3.10.1",
+        "3.10.2",
+        "3.11.0",
+        "3.11.1",
+        "3.11.2",
+        "3.12.0",
+        "3.12.1",
+        "4.00.0",
+        "4.00.1",
+        "4.01.0",
+        "4.02.0",
+        "4.02.1",
+        "4.02.2",
+        "4.02.3",
+        "4.02.4",
+        "4.03.0",
+        "4.03.1",
+        "4.04.0",
+        "4.04.1",
+        "4.04.2",
+        "4.04.3",
+        "4.05.0",
+        "4.05.1",
+        "4.06.0",
+        "4.06.1",
+        "4.06.2",
+        "4.07.0",
+        "4.07.1",
+        "4.07.2",
+        "4.08.0",
+        "4.08.1",
+        "4.08.2",
+        "4.09.0",
+        "4.09.1",
+        "4.09.2",
+        "4.10.0",
+        "4.10.1",
+        "4.10.2",
+        "4.10.3",
+        "4.11.0",
+        "4.11.1",
+        "4.11.2",
+        "4.11.3",
+        "4.12.0",
+        "4.12.1",
+        "4.12.2",
+        "4.13.0",
+        "4.13.1",
+        "4.13.2",
+        "4.14.0",
+        "4.14.1",
+        "4.14.2",
+        "4.14.3"
+      ],
+      "ecosystem_specific": {
+        "opam_constraint": "ocaml {< \"4.14.4\"}",
+        "affected_bindings": [
+          "Bigarray.reshape",
+          "Bigarray.reshape_0",
+          "Bigarray.reshape_1",
+          "Bigarray.reshape_2",
+          "Bigarray.reshape_3",
+          "caml_ba_reshape"
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "REPORT",
+      "url": "https://github.com/ocaml/ocaml/issues/14655"
+    },
+    {
+      "type": "FIX",
+      "url": "https://github.com/ocaml/ocaml/pull/14691"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Andriy Sultanov",
+      "type": "REPORTER"
+    },
+    {
+      "name": "Stephen Dolan",
+      "type": "REMEDIATION_DEVELOPER"
+    },
+    {
+      "name": "Xavier Leroy",
+      "type": "REMEDIATION_REVIEWER"
+    },
+    {
+      "name": "Hannes Mehnert",
+      "type": "COORDINATOR"
+    }
+  ],
+  "database_specific": {
+    "osv": "https://github.com/ocaml/security-advisories/tree/generated-osv/2026/OSEC-2026-04.json",
+    "human_link": "https://github.com/ocaml/security-advisories/tree/main/advisories/2026/OSEC-2026-04.md",
+    "cwe": [
+      "CWE-190"
+    ]
+  }
+}
