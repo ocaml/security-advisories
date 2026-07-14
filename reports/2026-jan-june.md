@@ -26,7 +26,7 @@ Another utility to check your "opam switch" for installed vulnerable packages (u
 
 On March 19th a public OCaml security meeting took place with 10 attendees. The meeting notes are available at https://pad.data.coop/7-Ic5rG6ToynsW02hJsndg
 
-# opam-repository Modification Policy
+# Modification Policy of the opam-repository
 
 The Security Team proposed to make the immutability policy stricter (see https://github.com/ocaml/opam-repository/pull/29072) - which has been merged. So, any published opam package must not modify its sources (change tarball, add patches, modify build instructions, ...). Instead, a new version must be published. This makes the package URL (https://github.com/package-url/purl-spec) sensible and point to a precise source.
 
