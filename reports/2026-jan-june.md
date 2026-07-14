@@ -32,7 +32,7 @@ The Security Team proposed to make the immutability policy stricter (see https:/
 
 # Grant Proposals
 
-A call for contributions was opened until end of March 2026. The Security Team is impressed by the amount and quality of the proposals. Evaluation and finding funding for proposals is still ongoing.
+A call for contributions was opened until end of March 2026. The Security Team is impressed by the amount and quality of the proposals. Evaluation and finding funding for proposals is still ongoing. We have some preliminary decisions and will reach out to the applicants by the end of July 2026.
 
 # Advisories
 
