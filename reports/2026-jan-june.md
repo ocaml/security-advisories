@@ -14,7 +14,7 @@ The team consists of:
 
 # Vulnerability Database
 
-The public vulnerability database (https://github.com/ocaml/security-advisories) is established, and filled as well with old security advisories (from the MirageOS project, etc.). There is tooling via CI which generates a branch "generated-osv", which is a source for the Open Source Vulnerability database (https://osv.dev), run by Google.
+The public vulnerability database (https://github.com/ocaml/security-advisories) is established, and filled as well with old security advisories (from the MirageOS project, etc.). There is tooling via CI which generates a branch "generated-osv", which is a source for the Open Source Vulnerability database (https://osv.dev), run by Google. The direct link for all security advisories of the OCaml Security team is [here](https://osv.dev/list?ecosystem=opam).
 
 The tooling is available from https://github.com/hannesm/advisories.
 
@@ -36,7 +36,7 @@ A call for contributions was opened until end of March 2026. The Security Team i
 
 # Advisories
 
-So far, there have been 10 advisories (OSEC-2026-01 until OSEC-2026-10) published, and some more are worked on. Our primary communication channel is email, and we reach out to reports that we received GitHub by email.
+So far, there have been 10 advisories (OSEC-2026-01 until OSEC-2026-10) published, and some more are worked on. Our primary communication channel is email, and we reach out to reports that we received GitHub by email. A [public mailing list](https://sympa.inria.fr/sympa/info/ocsf-ocaml-security-announcements) is available where security advisories are announced.
 
 They range from issues in the OCaml runtime (Marshal buffer over-read OSEC-2026-01 CVE-2026-28364, Bigarray.reshape interger overflow OSEC-2026-04 CVE-2026-34353, command injection on Windows via filename OSEC-2026-05 CVE-2026-41083), opam sandbox escape (OSEC-2026-03 CVE-2026-41082, OSEC-2026-10 CVE-2026-57825), insufficient certificate property checks (in tls, OSEC-2026-06 CVE-2026-45388, OSEC-2026-07 CVE-2026-45389), path traversal (in tar, OSEC-2026-08 CVE-2026-45390), memory exhaustion (unbounded memory usage in arp, OSEC-2026-02, infinite loop in albatross-console, OSEC-2026-09).
 
