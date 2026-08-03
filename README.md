@@ -2,13 +2,22 @@
 
 The OCaml Security Advisory Database is a repository of security advisories filed against the OCaml compiler and OCaml packages published via [opam](https://opam.ocaml.org).
 
-This database is still work in progress, please stay tuned for updates.
-
 It is maintained by the [OCaml security team](https://ocaml.org/security).
 
 ## Receiving Security Advisories
 
 On the public [mailing list ocsf-ocaml-security-announcements](https://sympa.inria.fr/sympa/info/ocsf-ocaml-security-announcements) every security advisory will be published. Everyone can subscribe to that mailing list. It is only for security advisories, there won't be any discussion on the mailing list.
+
+## What is needed in a report about a security issue?
+
+In order to process reports, we need:
+
+- A brief description of the vulnerability,
+- A reproducible example using opam-installed binaries or equivalent,
+- Indication whether you want to stay anonymous or revealing your name (for the upstream authors and advisory),
+- A [CWE](https://cwe.mitre.org/) identifier,
+- A classification [CVSS](https://www.first.org/cvss/calculator/3.1),
+- Indication whether you requested a CVE number already or want us to do this.
 
 ## Reporting Vulnerabilities
 
