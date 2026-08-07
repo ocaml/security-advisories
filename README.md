@@ -10,14 +10,14 @@ On the public [mailing list ocsf-ocaml-security-announcements](https://sympa.inr
 
 ## What is needed in a report about a security issue?
 
-In order to process reports, we need:
+In order to quickly process reports, it is great if you can supply:
 
 - A brief description of the vulnerability,
-- A reproducible example using opam-installed binaries or equivalent,
 - Indication whether you want to stay anonymous or revealing your name (for the upstream authors and advisory),
+- A reproducible example using opam-installed binaries or equivalent,
 - A [CWE](https://cwe.mitre.org/) identifier,
 - A classification [CVSS](https://www.first.org/cvss/calculator/3.1),
-- Indication whether you requested a CVE number already or want us to do this.
+- Indication whether you already requested a CVE number, or want us to do this.
 
 ## Reporting Vulnerabilities
 
