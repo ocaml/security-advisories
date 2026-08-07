@@ -84,7 +84,15 @@
         "2.1.0"
       ],
       "ecosystem_specific": {
-        "opam_constraint": "mirage-crypto {< \"2.2.0\"}"
+        "opam_constraint": "mirage-crypto {< \"2.2.0\"}",
+        "affected_bindings": [
+          "Mirage_crypto.AES.CCM16.authenticate_decrypt_into",
+          "Mirage_crypto.AES.CCM16.unsafe_authenticate_decrypt_into",
+          "Mirage_crypto.Chacha20.authenticate_decrypt_into",
+          "Mirage_crypto.Chacha20.unsafe_authenticate_decrypt_into",
+          "Mirage_crypto.AES.GCM.authenticate_decrypt_into",
+          "Mirage_crypto.AES.GCM.unsafe_authenticate_decrypt_into"
+        ]
       }
     }
   ],

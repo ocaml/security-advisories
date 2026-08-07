@@ -69,7 +69,12 @@
         "2.1.0"
       ],
       "ecosystem_specific": {
-        "opam_constraint": "mirage-crypto-ec {< \"2.2.0\"}"
+        "opam_constraint": "mirage-crypto-ec {< \"2.2.0\"}",
+        "affected_bindings": [
+          "Mirage_crypto_ec.P256.DSA.pub_of_octets",
+          "Mirage_crypto_ec.P384.DSA.pub_of_octets",
+          "Mirage_crypto_ec.P521.DSA.pub_of_octets"
+        ]
       }
     }
   ],
