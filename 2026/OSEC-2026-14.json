@@ -1,0 +1,124 @@
+{
+  "schema_version": "1.7.4",
+  "id": "OSEC-2026-14",
+  "modified": "2026-08-07T13:00:00Z",
+  "published": "2026-08-07T13:00:00Z",
+  "summary": "RSA signature verification raises undocumented exception",
+  "details": "The RSA decrypt and encrypt functions raise an Invalid_argument exception if the\nmessage is smaller than 2. This leads to X509 certificates with a signature\nvalue of 0 or 1 to throw this Invalid_argument exception instead of a proper\nerror.\n\n## Fix\n\nThe fix is to reuse the Insufficient_key exception, which is documented and\ncaught further up in the stack.\n\n## Timeline\n\n- July 28th 2026: report to security@ocaml.org\n- August 7th: release of mirage-crypto-pk 2.3.0 and security advisory",
+  "severity": [
+    {
+      "type": "CVSS_V3",
+      "score": "CVSS:3.1/AV:N/AC:L/PR:L/UI:N/S:U/C:N/I:N/A:L"
+    }
+  ],
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "opam",
+        "name": "mirage-crypto-pk",
+        "purl": "pkg:opam/mirage-crypto-pk"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "2.3.0"
+            }
+          ]
+        },
+        {
+          "type": "GIT",
+          "repo": "https://github.com/mirage/mirage-crypto.git",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "a0f59a0c90eb067505b55a03d3bb104eacd6dd33"
+            }
+          ]
+        }
+      ],
+      "versions": [
+        "0.6.0",
+        "0.6.1",
+        "0.6.2",
+        "0.7.0",
+        "0.8.0",
+        "0.8.1",
+        "0.8.2",
+        "0.8.3",
+        "0.8.4",
+        "0.8.5",
+        "0.8.6",
+        "0.8.7",
+        "0.8.8",
+        "0.8.9",
+        "0.8.10",
+        "0.9.0",
+        "0.9.1",
+        "0.9.2",
+        "0.10.0",
+        "0.10.1",
+        "0.10.2",
+        "0.10.3",
+        "0.10.4",
+        "0.10.5",
+        "0.10.6",
+        "0.10.7",
+        "0.11.0",
+        "0.11.1",
+        "0.11.2",
+        "0.11.3",
+        "1.0.0",
+        "1.1.0",
+        "1.2.0",
+        "2.0.0",
+        "2.0.1",
+        "2.0.2",
+        "2.0.3",
+        "2.1.0",
+        "2.2.0"
+      ],
+      "ecosystem_specific": {
+        "opam_constraint": "mirage-crypto-pk {< \"2.3.0\"}",
+        "affected_bindings": [
+          "Mirage_crypto_pk.Rsa.encrypt",
+          "Mirage_crypto_pk.Rsa.decrypt",
+          "Mirage_crypto_pk.Rsa.PKCS1.encrypt",
+          "Mirage_crypto_pk.Rsa.PKCS1.decrypt",
+          "Mirage_crypto_pk.Rsa.PKCS1.sig_encode",
+          "Mirage_crypto_pk.Rsa.PKCS1.sig_decode",
+          "Mirage_crypto_pk.Rsa.PKCS1.sign",
+          "Mirage_crypto_pk.Rsa.PKCS1.verify",
+          "Mirage_crypto_pk.Rsa.OAEP.encrypt",
+          "Mirage_crypto_pk.Rsa.OAEP.decrypt",
+          "Mirage_crypto_pk.Rsa.PSS.sign",
+          "Mirage_crypto_pk.Rsa.PSS.verify"
+        ]
+      }
+    }
+  ],
+  "references": [],
+  "credits": [
+    {
+      "name": "Thomas Gazagnaire",
+      "type": "REPORTER"
+    },
+    {
+      "name": "Hannes Mehnert",
+      "type": "REMEDIATION_DEVELOPER"
+    }
+  ],
+  "database_specific": {
+    "osv": "https://github.com/ocaml/security-advisories/tree/generated-osv/2026/OSEC-2026-14.json",
+    "human_link": "https://github.com/ocaml/security-advisories/tree/main/advisories/2026/OSEC-2026-14.md",
+    "cwe": [
+      "CWE-248"
+    ]
+  }
+}
