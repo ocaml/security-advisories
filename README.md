@@ -18,6 +18,7 @@ In order to quickly process reports, it is great if you can supply:
 - A [CWE](https://cwe.mitre.org/) identifier,
 - A classification [CVSS](https://www.first.org/cvss/calculator/3.1),
 - Indication whether you already requested a CVE number, or want us to do this.
+- Please indicate what tooling has been used for finding the issue, including code review, static analysis, or LLM. Both for the reported issue and the report itself.
 
 ## Reporting Vulnerabilities
 
