@@ -1,0 +1,104 @@
+{
+  "schema_version": "1.7.4",
+  "id": "OSEC-2026-17",
+  "modified": "2026-08-17T09:45:00Z",
+  "published": "2026-08-17T09:45:00Z",
+  "summary": "Timing leak in NIST elliptic curves scalar multiplication",
+  "details": "The scalar multiplication includes pre-computed tables for speedup (introduced in mirage-crypto-ec 0.11.3). The lookup algorithm for these tables performs secret-dependent reads instead of scanning the entire table.\n\n## Solution\n\nInstead of using the index `n - 1`, where `n` is secret-dependent, use `i - 1`, as done in the Go reference implementation. If `n` is 0, there is a out-of-bounds read before the patch.\n\n## Timeline\n- 2026-08-12: report by Eric Ebinger to security@ocaml.org\n- 2026-08-17: release of mirage-crypto-ec 2.4.0 and this advisory",
+  "severity": [
+    {
+      "type": "CVSS_V3",
+      "score": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:H/I:N/A:N"
+    }
+  ],
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "opam",
+        "name": "mirage-crypto-ec",
+        "purl": "pkg:opam/mirage-crypto-ec"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0.11.3"
+            },
+            {
+              "fixed": "2.4.0"
+            }
+          ]
+        },
+        {
+          "type": "GIT",
+          "repo": "https://github.com/mirage/mirage-crypto",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "1a61aeee7f593ec067612df1739ec905eab0450f"
+            }
+          ]
+        }
+      ],
+      "versions": [
+        "0.11.3",
+        "1.0.0",
+        "1.1.0",
+        "1.2.0",
+        "2.0.0",
+        "2.0.1",
+        "2.0.2",
+        "2.0.3",
+        "2.1.0",
+        "2.2.0",
+        "2.3.0"
+      ],
+      "ecosystem_specific": {
+        "opam_constraint": "mirage-crypto-ec {>= \"0.11.3\" & < \"2.4.0\"}",
+        "affected_bindings": [
+          "Mirage_crypto_ec.P256.Dh.share",
+          "Mirage_crypto_ec.P256.Dsa.generate",
+          "Mirage_crypto_ec.P256.Dsa.sign",
+          "Mirage_crypto_ec.P256.Dsa.pub_of_priv",
+          "Mirage_crypto_ec.P384.Dh.share",
+          "Mirage_crypto_ec.P384.Dsa.generate",
+          "Mirage_crypto_ec.P384.Dsa.sign",
+          "Mirage_crypto_ec.P384.Dsa.pub_of_priv",
+          "Mirage_crypto_ec.P521.Dh.share",
+          "Mirage_crypto_ec.P521.Dsa.generate",
+          "Mirage_crypto_ec.P521.Dsa.sign",
+          "Mirage_crypto_ec.P521.Dsa.pub_of_priv"
+        ]
+      }
+    }
+  ],
+  "references": [],
+  "credits": [
+    {
+      "name": "Eric Ebinger",
+      "type": "REPORTER"
+    },
+    {
+      "name": "Hannes Mehnert",
+      "type": "COORDINATOR"
+    },
+    {
+      "name": "Virgile Robles",
+      "type": "REMEDIATION_REVIEWER"
+    },
+    {
+      "name": "Eric Ebinger",
+      "type": "REMEDIATION_DEVELOPER"
+    }
+  ],
+  "database_specific": {
+    "osv": "https://github.com/ocaml/security-advisories/tree/generated-osv/2026/OSEC-2026-17.json",
+    "human_link": "https://github.com/ocaml/security-advisories/tree/main/advisories/2026/OSEC-2026-17.md",
+    "cwe": [
+      "CWE-208"
+    ]
+  }
+}
