@@ -1,0 +1,187 @@
+{
+  "schema_version": "1.7.4",
+  "id": "OSEC-2026-16",
+  "modified": "2026-08-20T18:15:00Z",
+  "published": "2026-08-20T18:15:00Z",
+  "summary": "Path traversal in Cohttp.Path.resolve_local_file",
+  "details": "The issue is that the function normalizes the URI path before percent\ndecoding it:\n\n```OCaml\nlet resolve_local_file ~docroot ~uri =\n\n  let path = Uri.(pct_decode (path (resolve \"http\" (of_string \"/\") uri))) in\n\n  ...\n```\n\nBecause `%2f` is decoded after Uri.resolve, encoded separators survive\ndot-segment normalization. For example, a request path like:\n\n```\n/static/..%2f..%2f..%2fetc/passwd\n```\n\nis normalized as a single encoded segment, then decoded into:\n\n```\n/static/../../../etc/passwd\n```\n\nafterwards.\n\n## Timeline\n\n- Aug 11th 2026: report to security@ocaml.org\n- Aug 14th 2026: PR published on <https://github.com/mirage/ocaml-cohttp/pull/1145>\n- Aug 20th 2026: fix released in v6.3.0 <https://github.com/ocaml/opam-repository/pull/30528>",
+  "severity": [
+    {
+      "type": "CVSS_V3",
+      "score": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:N/A:N"
+    }
+  ],
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "opam",
+        "name": "cohttp",
+        "purl": "pkg:opam/cohttp"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "6.3.0"
+            }
+          ]
+        },
+        {
+          "type": "GIT",
+          "repo": "https://github.com/mirage/ocaml-cohttp.git",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "5f5a65ec3289c1cd8072bdf0ef22c181b4f11356"
+            }
+          ]
+        }
+      ],
+      "versions": [
+        "0.9.1",
+        "0.9.2",
+        "0.9.3",
+        "0.9.4",
+        "0.9.5",
+        "0.9.6",
+        "0.9.7",
+        "0.9.8",
+        "0.9.9",
+        "0.9.10",
+        "0.9.11",
+        "0.9.12",
+        "0.9.13",
+        "0.9.14",
+        "0.9.15",
+        "0.9.16",
+        "0.10.0",
+        "0.10.1",
+        "0.11.0",
+        "0.11.1",
+        "0.11.2",
+        "0.12.0",
+        "0.13.0",
+        "0.14.0",
+        "0.15.0",
+        "0.15.1",
+        "0.15.2",
+        "0.16.0",
+        "0.16.1",
+        "0.17.0",
+        "0.17.1",
+        "0.17.2",
+        "0.18.0",
+        "0.18.1",
+        "0.18.2",
+        "0.18.3",
+        "0.19.0",
+        "0.19.1",
+        "0.19.2",
+        "0.19.3",
+        "0.20.0",
+        "0.20.1",
+        "0.20.2",
+        "0.21.0",
+        "0.21.1",
+        "0.22.0",
+        "0.99.0",
+        "1.0.0",
+        "1.0.2",
+        "1.1.0",
+        "1.1.1",
+        "1.2.0",
+        "2.0.0",
+        "2.1.2",
+        "2.1.3",
+        "2.2.0",
+        "2.3.0",
+        "2.4.0",
+        "2.5.0",
+        "2.5.1",
+        "2.5.2",
+        "2.5.2-1",
+        "2.5.3",
+        "2.5.4",
+        "2.5.5",
+        "2.5.6",
+        "2.5.7",
+        "2.5.8",
+        "3.0.0",
+        "4.0.0",
+        "4.1.1",
+        "4.1.2",
+        "5.0.0",
+        "5.1.0",
+        "5.2.0",
+        "5.3.0",
+        "5.3.1",
+        "6.0.0~alpha0",
+        "6.0.0~alpha1",
+        "6.0.0~alpha2",
+        "6.0.0~beta2",
+        "6.0.0",
+        "6.1.0",
+        "6.1.1",
+        "6.2.1",
+        "6.2.2"
+      ],
+      "ecosystem_specific": {
+        "opam_constraint": "cohttp {< \"6.3.0\"}",
+        "affected_bindings": [
+          "Cohttp.Path.resolve_local_file",
+          "Cohttp_async.Server.resolve_local_file",
+          "Cohttp_lwt_unix.Server.resolve_file",
+          "Cohttp_lwt.Make().resolve_local_file"
+        ]
+      }
+    }
+  ],
+  "references": [],
+  "credits": [
+    {
+      "name": "Sapphire Livingstone",
+      "type": "REPORTER"
+    },
+    {
+      "name": "Sapphire Livingstone",
+      "type": "REMEDIATION_DEVELOPER"
+    },
+    {
+      "name": "Anil Madhavapeddy",
+      "type": "REMEDIATION_DEVELOPER"
+    },
+    {
+      "name": "Anil Madhavapeddy",
+      "type": "REMEDIATION_REVIEWER"
+    },
+    {
+      "name": "Michael Dales",
+      "type": "REMEDIATION_REVIEWER"
+    },
+    {
+      "name": "Edwin Torok",
+      "type": "REMEDIATION_REVIEWER"
+    },
+    {
+      "name": "Patrick Ferris",
+      "type": "REMEDIATION_REVIEWER"
+    },
+    {
+      "name": "Hannes Mehnert",
+      "type": "COORDINATOR"
+    }
+  ],
+  "database_specific": {
+    "osv": "https://github.com/ocaml/security-advisories/tree/generated-osv/2026/OSEC-2026-16.json",
+    "human_link": "https://github.com/ocaml/security-advisories/tree/main/advisories/2026/OSEC-2026-16.md",
+    "cwe": [
+      "CWE-22"
+    ]
+  }
+}
