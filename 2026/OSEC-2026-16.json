@@ -1,14 +1,14 @@
 {
   "schema_version": "1.7.4",
   "id": "OSEC-2026-16",
-  "modified": "2026-08-20T18:15:00Z",
+  "modified": "2026-08-22T11:05:00Z",
   "published": "2026-08-20T18:15:00Z",
   "summary": "Path traversal in Cohttp.Path.resolve_local_file",
   "details": "The issue is that the function normalizes the URI path before percent\ndecoding it:\n\n```OCaml\nlet resolve_local_file ~docroot ~uri =\n\n  let path = Uri.(pct_decode (path (resolve \"http\" (of_string \"/\") uri))) in\n\n  ...\n```\n\nBecause `%2f` is decoded after Uri.resolve, encoded separators survive\ndot-segment normalization. For example, a request path like:\n\n```\n/static/..%2f..%2f..%2fetc/passwd\n```\n\nis normalized as a single encoded segment, then decoded into:\n\n```\n/static/../../../etc/passwd\n```\n\nafterwards.\n\n## Timeline\n\n- Aug 11th 2026: report to security@ocaml.org\n- Aug 14th 2026: PR published on <https://github.com/mirage/ocaml-cohttp/pull/1145>\n- Aug 20th 2026: fix released in v6.3.0 <https://github.com/ocaml/opam-repository/pull/30528>",
   "severity": [
     {
-      "type": "CVSS_V3",
-      "score": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:N/A:N"
+      "type": "CVSS_V4",
+      "score": "CVSS:4.0/AV:N/AC:L/AT:N/PR:N/UI:N/VC:H/VI:N/VA:N/SC:N/SI:N/SA:N/S:N/AU:Y/R:A/V:D/RE:M"
     }
   ],
   "affected": [
