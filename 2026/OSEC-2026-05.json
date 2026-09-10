@@ -1,7 +1,7 @@
 {
   "schema_version": "1.7.4",
   "id": "OSEC-2026-05",
-  "modified": "2026-06-18T13:45:00Z",
+  "modified": "2026-09-10T10:45:00Z",
   "published": "2026-06-18T13:45:00Z",
   "aliases": [
     "CVE-2026-41083"
@@ -167,7 +167,12 @@
       }
     }
   ],
-  "references": [],
+  "references": [
+    {
+      "type": "FIX",
+      "url": "https://github.com/ocaml/ocaml/pull/14853"
+    }
+  ],
   "credits": [
     {
       "name": "Andrew Nesbitt",
