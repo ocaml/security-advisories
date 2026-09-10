@@ -1,8 +1,11 @@
 {
   "schema_version": "1.7.4",
   "id": "OSEC-2026-14",
-  "modified": "2026-08-07T13:00:00Z",
+  "modified": "2026-09-10T09:45:00Z",
   "published": "2026-08-07T13:00:00Z",
+  "aliases": [
+    "CVE-2026-87735"
+  ],
   "summary": "RSA signature verification raises undocumented exception",
   "details": "The RSA decrypt and encrypt functions raise an Invalid_argument exception if the\nmessage is smaller than 2. This leads to X509 certificates with a signature\nvalue of 0 or 1 to throw this Invalid_argument exception instead of a proper\nerror.\n\n## Fix\n\nThe fix is to reuse the Insufficient_key exception, which is documented and\ncaught further up in the stack.\n\n## Timeline\n\n- July 28th 2026: report to security@ocaml.org\n- August 7th: release of mirage-crypto-pk 2.3.0 and security advisory",
   "severity": [

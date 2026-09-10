@@ -1,8 +1,11 @@
 {
   "schema_version": "1.7.4",
   "id": "OSEC-2026-15",
-  "modified": "2026-08-07T13:00:00Z",
+  "modified": "2026-09-10T09:45:00Z",
   "published": "2026-08-07T13:00:00Z",
+  "aliases": [
+    "CVE-2026-87736"
+  ],
   "summary": "EC public key out of bounds read",
   "details": "The internal Point.of_octets function is missing a length check for compressed\npoints, and thus is raising an exception when a short buffer is provided. This\naffects all NIST curves (P-256, P-384, P-521) and both `Dsa.pub_of_octets` and\n`Dh.key_exchange` functions.\n\n## Fix\n\nThe fix is to check the length of the provided buffer.\n\n## Timeline\n\n- July 28th 2026: report to security@ocaml.org\n- August 7th: release of mirage-crypto-pk 2.3.0 and security advisory",
   "severity": [
