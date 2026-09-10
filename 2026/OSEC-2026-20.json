@@ -1,0 +1,141 @@
+{
+  "schema_version": "1.7.4",
+  "id": "OSEC-2026-20",
+  "modified": "2026-09-10T10:00:00Z",
+  "published": "2026-09-10T10:00:00Z",
+  "summary": "Cstruct indexing bugs can corrupt filtered output and reverse parsing results",
+  "details": "The security advisory information in that issue is uptodate, and I've just opened cstruct.6.3.0 on the opam-repo with the fixes. Do let me know if I need to do anything else to inform an advisory beyond what I put into the GH issue. I can wait for a CVE, or announce the fix on Discuss first, as you prefer.\n\n## Impact\n\n- `Cstruct.filter_map` writes retained bytes at their original input positions, producing corrupted output when earlier bytes are dropped.\n- `Cstruct.tail ~rev:true` removes two bytes instead of one and raises an exception for single-byte views.\n- `Cstruct.cuts ~rev:true` may compare input against the wrong data, split at incorrect positions, and construct results using offsets outside the requested view.\n- `Cstruct.find` and `Cstruct.find_sub ~rev:true` may return slices from the wrong location when operating on non-zero-offset views.\n\nThese are a set of logical indexing and bounds-calculation errors (CWE-682), and not direct memory-safety vulnerabilities. However, affected operations may return corrupted data, raise an unexpected exception, split input incorrectly, or return bytes outside the requested Cstruct view but still within its backing buffer.\n\nIn security-sensitive parsers, this could cause validation bypasses, denial of service, or unintended disclosure of adjacent buffer contents.\n\n## Workarounds\n\nUsers unable to upgrade cstruct should backport the corresponding source changes. There is no configuration-based mitigation since these are buggy library calls.\n\n## References\n\nDiscovered via [Scrutineer](https://github.com/alpha-omega-security/scrutineer) and Deepseek GLM-5.3 Flash running locally.\n\n## Timeline\n\n- 2026-09-04: reported via GitHub to ocaml/security-advisories repository\n- 2026-09-05: reported via email to security@ocaml.org\n- 2026-09-05: patch proposed and reviewed\n- 2026-09-05: release cstruct 6.3.0\n- 2026-09-10: published advisory",
+  "severity": [
+    {
+      "type": "CVSS_V3",
+      "score": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:L/I:L/A:L"
+    }
+  ],
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "opam",
+        "name": "cstruct",
+        "purl": "pkg:opam/cstruct"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "6.3.0"
+            }
+          ]
+        },
+        {
+          "type": "GIT",
+          "repo": "https://github.com/mirage/ocaml-cstruct",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "936f1010d3e9914da9c5c8a4739e9278a37e1c3e"
+            }
+          ]
+        }
+      ],
+      "versions": [
+        "0.4.0",
+        "0.4.1",
+        "0.5.0",
+        "0.5.1",
+        "0.5.2",
+        "0.5.3",
+        "0.6.0",
+        "0.6.1",
+        "0.6.2",
+        "0.7.0",
+        "0.7.1",
+        "0.8.0",
+        "0.8.1",
+        "1.0.0",
+        "1.0.1",
+        "1.1.0",
+        "1.2.0",
+        "1.3.0",
+        "1.3.1",
+        "1.4.0",
+        "1.5.0",
+        "1.6.0",
+        "1.7.0",
+        "1.7.1",
+        "1.8.0",
+        "1.9.0",
+        "2.0.0",
+        "2.1.0",
+        "2.2.0",
+        "2.3.0",
+        "2.3.1",
+        "2.3.2",
+        "2.4.1",
+        "3.0.0",
+        "3.0.1",
+        "3.0.2",
+        "3.1.0",
+        "3.1.1",
+        "3.2.0",
+        "3.2.1",
+        "3.3.0",
+        "3.4.0",
+        "3.5.0",
+        "3.6.0",
+        "3.7.0",
+        "4.0.0",
+        "5.0.0",
+        "5.1.1",
+        "5.2.0",
+        "6.0.0",
+        "6.0.1",
+        "6.1.0",
+        "6.1.1",
+        "6.2.0"
+      ],
+      "ecosystem_specific": {
+        "opam_constraint": "cstruct {< \"6.3.0\"}",
+        "affected_bindings": [
+          "Cstruct.filter_map",
+          "Cstruct.tail",
+          "Cstruct.cuts",
+          "Cstruct.find",
+          "Cstruct.find_rev"
+        ]
+      }
+    }
+  ],
+  "references": [
+    {
+      "type": "FIX",
+      "url": "https://github.com/mirage/ocaml-cstruct/pull/324"
+    }
+  ],
+  "credits": [
+    {
+      "name": "Anil Madhavapeddy",
+      "type": "REPORTER"
+    },
+    {
+      "name": "Thomas Gazagnaire",
+      "type": "REMEDIATION_REVIEWER"
+    },
+    {
+      "name": "Anil Madhavapeddy",
+      "type": "REMEDIATION_DEVELOPER"
+    }
+  ],
+  "database_specific": {
+    "osv": "https://github.com/ocaml/security-advisories/tree/generated-osv/2026/OSEC-2026-20.json",
+    "human_link": "https://github.com/ocaml/security-advisories/tree/main/advisories/2026/OSEC-2026-20.md",
+    "cwe": [
+      "CWE-682"
+    ]
+  }
+}
