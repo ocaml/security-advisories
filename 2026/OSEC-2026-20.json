@@ -1,8 +1,11 @@
 {
   "schema_version": "1.7.4",
   "id": "OSEC-2026-20",
-  "modified": "2026-09-10T10:55:00Z",
+  "modified": "2026-09-10T20:20:00Z",
   "published": "2026-09-10T10:00:00Z",
+  "aliases": [
+    "CVE-2026-89087"
+  ],
   "summary": "Cstruct indexing bugs can corrupt filtered output and reverse parsing results",
   "details": "Several functions in cstruct may use wrong data, leading to unexpected exceptions and return corrupted data.\n\n## Impact\n\n- `Cstruct.filter_map` writes retained bytes at their original input positions, producing corrupted output when earlier bytes are dropped.\n- `Cstruct.tail ~rev:true` removes two bytes instead of one and raises an exception for single-byte views.\n- `Cstruct.cuts ~rev:true` may compare input against the wrong data, split at incorrect positions, and construct results using offsets outside the requested view.\n- `Cstruct.find` and `Cstruct.find_sub ~rev:true` may return slices from the wrong location when operating on non-zero-offset views.\n\nThese are a set of logical indexing and bounds-calculation errors (CWE-682), and not direct memory-safety vulnerabilities. However, affected operations may return corrupted data, raise an unexpected exception, split input incorrectly, or return bytes outside the requested Cstruct view but still within its backing buffer.\n\nIn security-sensitive parsers, this could cause validation bypasses, denial of service, or unintended disclosure of adjacent buffer contents.\n\n## Workarounds\n\nUsers unable to upgrade cstruct should backport the corresponding source changes. There is no configuration-based mitigation since these are buggy library calls.\n\n## References\n\nDiscovered via [Scrutineer](https://github.com/alpha-omega-security/scrutineer) and Deepseek GLM-5.3 Flash running locally.\n\n## Timeline\n\n- 2026-09-04: reported via GitHub to ocaml/security-advisories repository\n- 2026-09-05: reported via email to security@ocaml.org\n- 2026-09-05: patch proposed and reviewed\n- 2026-09-05: release cstruct 6.3.0\n- 2026-09-10: published advisory",
   "severity": [
