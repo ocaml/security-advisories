@@ -1,7 +1,11 @@
 {
   "schema_version": "1.7.4",
   "id": "OSEC-2026-09",
-  "modified": "2026-05-28T08:59:44Z",
+  "modified": "2026-09-23T15:23:50Z",
+  "published": "2026-05-28T08:59:44Z",
+  "aliases": [
+    "CVE-2026-96609"
+  ],
   "summary": "Albatross-console memory exhaustion",
   "details": "Albatross-console doesn't properly terminate when looping over the ringbuffer. This leads to denial of service and memory exhaustion.\n\n## Scenario\n\nA user that has access to albatross-console either via the unix domain socket (requires root:albatross by default) or via albatross-tls-endpoint (requires a valid certificate and a running unikernel) can send a specially crafted query for console logs that will make albatross-console hang and eventually exhaust memory.\n\n## Detailed description\n\nAlbatross-console receives console messages from running unikernels via named pipes. These console messages are stored in memory in a ring buffer with a non-configurable default size of 1024 lines. A client query the console output of a unikernel with either a count or a timestamp for limiting the output. A bug in the ring buffer logic exists so that when the ring buffer is full (has 1024 lines) the termination logic doesn't work properly.\n\nWhen using a timestamp to limit then a timestamp earlier than all recorded console output in the ring buffer bypasses the termination logic, and albatross-console will repeatedly loop over the ring buffer accumulating the entries in a list indefinitely eventually exhausting memory.\n\nIf using a count the termination logic doesn't take into consideration how many entries there actually are if the ring buffer is full. Using a very large or negative count will make albatross-console loop over the ring buffer accumulating entries in a list until the length of the list equals the requested count (an OCaml int). As this could be max_int or -1 this would exhaust memory, too.\n\n## Scope\n\nThe bug was introduced in 8a113e5ce07f062c701abb1c09ba3ce3147db867 and affected versions are v1.0.0 through v2.7.1. The vulnerability is only exploitable to users who can send console subscription commands to unikernels that produce sufficient log output to fill the ring buffer (1024 lines). It is not exploitable by unauthorized clients.",
   "severity": [
