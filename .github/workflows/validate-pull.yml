@@ -39,6 +39,7 @@ jobs:
           opam repository add archive git+https://github.com/ocaml/opam-repository-archive.git
           CHANGED_FILES=$(git diff --name-only -r HEAD^1 HEAD | grep advisories)
           for x in $CHANGED_FILES; do
+            if [ -e "${x}" -a ! -s "${x}" ]; then echo "Skipping reserved advisory ${x}"; continue; fi
             echo "Converting advisory $x"
             opam exec -- advisories $x > $x.json
             echo "Advisory is:"
