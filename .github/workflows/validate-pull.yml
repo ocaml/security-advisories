@@ -37,7 +37,7 @@ jobs:
           git fetch origin ${{ github.base_ref }}
           opam repository add main git+https://github.com/ocaml/opam-repository.git
           opam repository add archive git+https://github.com/ocaml/opam-repository-archive.git
-          CHANGED_FILES=$(git diff --name-only -r HEAD^1 HEAD | grep advisories)
+          CHANGED_FILES=$(git diff --name-only -r HEAD^1 HEAD | grep advisories || :)
           for x in $CHANGED_FILES; do
             if [ -e "${x}" -a ! -s "${x}" ]; then echo "Skipping reserved advisory ${x}"; continue; fi
             echo "Converting advisory $x"
