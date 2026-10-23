@@ -1,0 +1,189 @@
+{
+  "schema_version": "1.7.4",
+  "id": "OSEC-2026-23",
+  "modified": "2026-10-23T21:30:00Z",
+  "published": "2026-10-23T21:30:00Z",
+  "aliases": [
+    "CVE-2026-28364"
+  ],
+  "summary": "Multiple issues in Marshal",
+  "details": "Several issues have been discovered in the Marshal module:\n\nANT-2026-K7NTK0FT Stale obj_counter across unmarshal calls enables null/freed intern_obj_table indexing\n\nANT-2026-2NJYQWEX Custom block size wraparound in CODE_CUSTOM_LEN allocation \n\nANT-2026-PJC00M7X Unmarshaler accepts forged Closure_tag metadata without validation\n\nThis is a followup for [OSEC-2026-01](https://osv.dev/vulnerability/OSEC-2026-01)\n\nCorrupted or malicious marshaled data that causes undefined behaviour in the runtime system when unmarshaled. input_value should either fail cleanly or produce a well-formed OCaml object, without corrupting the runtime system.\n\nConsequently, this excludes well-formed marshaled data that produces an OCaml object that is not of the type expected by the OCaml code and causes the Ocaml code to crash or misbehave.\n\n\n## Am I affected?\n\nIf you use one of the affected bindings `Marshal.from_channel`, `Marshal.from_bytes`, `Marshal.from_string`, `Stdlib.input_value` (or a wrapper in a library, such as `Lwt_io.read_value`).\n\nPlease note that Marshal is not type safe, and you have to be careful if you use the deserialization on untrusted input (due to type confusion, and remote code execution by design - you can use Marshal for code).\n\nIt is recommended to use Marshal only for communication between trusted processes.\n\n## Timeline\n\n- 2026-08-24: vulnerability was found\n- 2026-08-27: forwarded report to security@ocaml.org\n- 2026-09-29: fix merged to trunk",
+  "severity": [
+    {
+      "type": "CVSS_V3",
+      "score": "CVSS:3.1/AV:L/AC:L/PR:N/UI:N/S:U/C:H/I:L/A:N"
+    }
+  ],
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "opam",
+        "name": "ocaml",
+        "purl": "pkg:opam/ocaml"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "5.5.2"
+            }
+          ]
+        },
+        {
+          "type": "GIT",
+          "repo": "https://github.com/ocaml/ocaml",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "7da997d28b1ac57dd3a7108a865b327493fd4239"
+            }
+          ]
+        },
+        {
+          "type": "GIT",
+          "repo": "https://github.com/ocaml/ocaml",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "709b0ab93e53d54297b42d897d74dced1e9c75a5"
+            }
+          ]
+        }
+      ],
+      "versions": [
+        "3.07",
+        "3.07+1",
+        "3.07+2",
+        "3.08.0",
+        "3.08.1",
+        "3.08.2",
+        "3.08.3",
+        "3.08.4",
+        "3.09.0",
+        "3.09.1",
+        "3.09.2",
+        "3.09.3",
+        "3.10.0",
+        "3.10.1",
+        "3.10.2",
+        "3.11.0",
+        "3.11.1",
+        "3.11.2",
+        "3.12.0",
+        "3.12.1",
+        "4.00.0",
+        "4.00.1",
+        "4.01.0",
+        "4.02.0",
+        "4.02.1",
+        "4.02.2",
+        "4.02.3",
+        "4.02.4",
+        "4.03.0",
+        "4.03.1",
+        "4.04.0",
+        "4.04.1",
+        "4.04.2",
+        "4.04.3",
+        "4.05.0",
+        "4.05.1",
+        "4.06.0",
+        "4.06.1",
+        "4.06.2",
+        "4.07.0",
+        "4.07.1",
+        "4.07.2",
+        "4.08.0",
+        "4.08.1",
+        "4.08.2",
+        "4.09.0",
+        "4.09.1",
+        "4.09.2",
+        "4.10.0",
+        "4.10.1",
+        "4.10.2",
+        "4.10.3",
+        "4.11.0",
+        "4.11.1",
+        "4.11.2",
+        "4.11.3",
+        "4.12.0",
+        "4.12.1",
+        "4.12.2",
+        "4.13.0",
+        "4.13.1",
+        "4.13.2",
+        "4.14.0",
+        "4.14.1",
+        "4.14.2",
+        "4.14.3",
+        "4.14.4",
+        "4.14.5",
+        "5.0.0",
+        "5.0.1",
+        "5.1.0",
+        "5.1.1",
+        "5.1.2",
+        "5.2.0",
+        "5.2.1",
+        "5.2.2",
+        "5.3.0",
+        "5.3.1",
+        "5.4.0",
+        "5.4.1",
+        "5.4.2",
+        "5.5.0",
+        "5.5.1"
+      ],
+      "ecosystem_specific": {
+        "opam_constraint": "ocaml {< \"5.5.2\"}",
+        "affected_bindings": [
+          "Marshal.from_channel",
+          "Marshal.from_bytes",
+          "Marshal.from_string",
+          "input_value"
+        ]
+      }
+    }
+  ],
+  "references": [],
+  "credits": [
+    {
+      "name": "Anthropic",
+      "type": "REPORTER"
+    },
+    {
+      "name": "Hannes Mehnert",
+      "type": "COORDINATOR"
+    },
+    {
+      "name": "Edwin Török",
+      "type": "COORDINATOR"
+    },
+    {
+      "name": "Nicolás Ojeda Bär",
+      "type": "REMEDIATION_REVIEWER"
+    },
+    {
+      "name": "Xavier Leroy",
+      "type": "REMEDIATION_DEVELOPER"
+    }
+  ],
+  "database_specific": {
+    "osv": "https://github.com/ocaml/security-advisories/tree/generated-osv/2026/OSEC-2026-23.json",
+    "human_link": "https://github.com/ocaml/security-advisories/tree/main/advisories/2026/OSEC-2026-23.md",
+    "cwe": [
+      "CWE-126",
+      "CWE-502",
+      "CWE-754"
+    ]
+  }
+}

@@ -1,0 +1,189 @@
+{
+  "schema_version": "1.7.4",
+  "id": "OSEC-2026-24",
+  "modified": "2026-10-23T21:30:00Z",
+  "published": "2026-10-23T21:30:00Z",
+  "aliases": [
+    "CVE-2026-41083"
+  ],
+  "summary": "Multiple issues in command quoting on Windows",
+  "details": "ANT-2026-R7FKP7RG Win32 quote_cmd_filename misses pipe/redirect metacharacters\n\nANT-2026-SRZZ62SD Windows batch-file argument injection via maybe_quote/make_cmdline\n\nANT-2026-JPEWMPAB Win32 argument quoting leaves embedded CR/LF unescaped\n\nAlso includes the fix for [OSEC-2026-05](https://osv.dev/vulnerability/OSEC-2026-05)\n\n`Filename.quote_command` returns a quoted command line, suitable for use as an argument to `Sys.command`, `Unix.system`, and the `Unix.open_process` functions.\nHowever on Windows certain characters weren't properly escaped.\n\n`Unix.create_process` can invoke `.bat` or `.cmd` programs on Windows, and certain characters were accepted that cannot be quoted safely.\n\n## Fix\n\n`Filename.quote_command` has been updated to correctly quote arguments.\n`Unix.create_process*` has been updated to reject arguments that cannot be safely quoted by raising `Failure`:\n>  if the program [prog] is a [.bat] or [.cmd]\n>  script and either [prog] or [args] contain characters that cannot be\n>  securely passed to a script, such as [\" | & , ; < = > ^ % \"].\n>  If you really need to pass these characters to a script, consider\n>  using {!Unix.system} instead.\n\n## Am I affected?\n\nIf you use `Filename.quote_command` on Windows with user supplied arguments.\nIf you use `Unix.create_process*` or `Unix.open_process*` on Windows with `.bat` or `.cmd` programs, and user supplied arguments.\n\n## Timeline\n\n- 2026-08-24: vulnerability was found\n- 2026-08-27: forwarded report to security@ocaml.org\n- 2029-09-05: fix merged to trunk",
+  "severity": [
+    {
+      "type": "CVSS_V4",
+      "score": "CVSS:4.0/AV:L/AC:L/AT:N/PR:N/UI:N/VC:H/VI:H/VA:H/SC:N/SI:N/SA:N/E:P"
+    }
+  ],
+  "affected": [
+    {
+      "package": {
+        "ecosystem": "opam",
+        "name": "ocaml",
+        "purl": "pkg:opam/ocaml"
+      },
+      "ranges": [
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "5.5.2"
+            }
+          ]
+        },
+        {
+          "type": "GIT",
+          "repo": "https://github.com/ocaml/ocaml",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "70a3a75c0bfb23d67ad5fe3e9c1ba9800d61feae"
+            }
+          ]
+        },
+        {
+          "type": "GIT",
+          "repo": "https://github.com/ocaml/ocaml",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "0bbf8e5af985feb03a11a5ffe57d068373d09fd0"
+            }
+          ]
+        }
+      ],
+      "versions": [
+        "3.07",
+        "3.07+1",
+        "3.07+2",
+        "3.08.0",
+        "3.08.1",
+        "3.08.2",
+        "3.08.3",
+        "3.08.4",
+        "3.09.0",
+        "3.09.1",
+        "3.09.2",
+        "3.09.3",
+        "3.10.0",
+        "3.10.1",
+        "3.10.2",
+        "3.11.0",
+        "3.11.1",
+        "3.11.2",
+        "3.12.0",
+        "3.12.1",
+        "4.00.0",
+        "4.00.1",
+        "4.01.0",
+        "4.02.0",
+        "4.02.1",
+        "4.02.2",
+        "4.02.3",
+        "4.02.4",
+        "4.03.0",
+        "4.03.1",
+        "4.04.0",
+        "4.04.1",
+        "4.04.2",
+        "4.04.3",
+        "4.05.0",
+        "4.05.1",
+        "4.06.0",
+        "4.06.1",
+        "4.06.2",
+        "4.07.0",
+        "4.07.1",
+        "4.07.2",
+        "4.08.0",
+        "4.08.1",
+        "4.08.2",
+        "4.09.0",
+        "4.09.1",
+        "4.09.2",
+        "4.10.0",
+        "4.10.1",
+        "4.10.2",
+        "4.10.3",
+        "4.11.0",
+        "4.11.1",
+        "4.11.2",
+        "4.11.3",
+        "4.12.0",
+        "4.12.1",
+        "4.12.2",
+        "4.13.0",
+        "4.13.1",
+        "4.13.2",
+        "4.14.0",
+        "4.14.1",
+        "4.14.2",
+        "4.14.3",
+        "4.14.4",
+        "4.14.5",
+        "5.0.0",
+        "5.0.1",
+        "5.1.0",
+        "5.1.1",
+        "5.1.2",
+        "5.2.0",
+        "5.2.1",
+        "5.2.2",
+        "5.3.0",
+        "5.3.1",
+        "5.4.0",
+        "5.4.1",
+        "5.4.2",
+        "5.5.0",
+        "5.5.1"
+      ],
+      "ecosystem_specific": {
+        "opam_constraint": "ocaml {< \"5.5.2\"}",
+        "affected_bindings": [
+          "Filename.quote_command",
+          "Unix.create_process",
+          "Unix.create_process_env",
+          "Unix.open_process_args_in",
+          "Unix.open_process_args_out",
+          "Unix.open_process_args_full"
+        ]
+      }
+    }
+  ],
+  "references": [],
+  "credits": [
+    {
+      "name": "Anthropic",
+      "type": "REPORTER"
+    },
+    {
+      "name": "Hannes Mehnert",
+      "type": "COORDINATOR"
+    },
+    {
+      "name": "Edwin Török",
+      "type": "COORDINATOR"
+    },
+    {
+      "name": "Nicolás Ojeda Bär",
+      "type": "REMEDIATION_REVIEWER"
+    },
+    {
+      "name": "Xavier Leroy",
+      "type": "REMEDIATION_DEVELOPER"
+    }
+  ],
+  "database_specific": {
+    "osv": "https://github.com/ocaml/security-advisories/tree/generated-osv/2026/OSEC-2026-24.json",
+    "human_link": "https://github.com/ocaml/security-advisories/tree/main/advisories/2026/OSEC-2026-24.md",
+    "cwe": [
+      "CWE-78"
+    ]
+  }
+}
