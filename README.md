@@ -35,3 +35,13 @@ In order to quickly process reports, it is great if you can supply:
    - (8b.) The advisory is sent to the [mailing list for security announcements](https://sympa.inria.fr/sympa/info/ocsf-ocaml-security-announcements)
    - (8c.) The *maintainer(s)* (or the *responder*) publishes the fixed opam package to opam.ocaml.org (and mark vulnerable packages unavailable)
    - (8d.) The *responder* publishes the security announcement also on the [database](https://github.com/ocaml/security-advisories), which is an input source for [OSV](https://osv.dev)
+
+## Reserving advisory identifiers
+
+Advisories are identified by `OSEC-<year>-<number>`.
+They can be reserved by opening a PR to add an empty file to `advisories/<year>/OSEC-<year>-<number>.md`.
+The number is considered reserved when the PR is merged to `main`.
+
+Do *not* include details about what the vulnerability is in the PR that reserves the identifier.
+
+This mechanism is intended for internal coordination within the security team.
