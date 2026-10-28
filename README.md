@@ -41,4 +41,7 @@ In order to quickly process reports, it is great if you can supply:
 Advisories are identified by `OSEC-<year>-<number>`.
 They can be reserved by opening a PR to add an empty file to `advisories/<year>/OSEC-<year>-<number>.md`.
 The number is considered reserved when the PR is merged to `main`.
+
+Do *not* include details about what the vulnerability is in the PR that reserves the identifier.
+
 This mechanism is intended for internal coordination within the security team.
