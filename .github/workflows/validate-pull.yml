@@ -26,11 +26,13 @@ jobs:
       - name: Install advisories
         run: opam pin add --confirm-level=unsafe-yes https://github.com/hannesm/advisories.git
 
-      - name: Fetch OSV schema
-        run: curl -OL https://raw.githubusercontent.com/ossf/osv-schema/refs/heads/main/validation/schema.json
+      - name: Use Go
+        uses: actions/setup-go@v6
+        with:
+          go-version: stable
 
-      - name: Install check-jsonschema
-        run: pipx install check-jsonschema
+      - name: Install osv-linter
+        run: go install github.com/ossf/osv-schema/tools/osv-linter/cmd/osv@latest
 
       - name: Check and run advisories
         run: |
@@ -45,6 +47,6 @@ jobs:
             echo "Advisory is:"
             cat $x.json | jq
             echo "Validating advisory $x.json"
-            check-jsonschema --schemafile ./schema.json $x.json
+            osv record lint --collection offline $x.json
             echo "Done with exit code $?"
           done
