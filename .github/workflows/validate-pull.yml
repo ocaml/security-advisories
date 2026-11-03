@@ -24,7 +24,7 @@ jobs:
           ocaml-compiler: ${{ matrix.ocaml-version }}
 
       - name: Install advisories
-        run: opam pin add --confirm-level=unsafe-yes https://github.com/hannesm/advisories.git
+        run: opam pin add --confirm-level=unsafe-yes https://github.com/bn-d/hannesm-advisories.git#separate-git-affected
 
       - name: Use Go
         uses: actions/setup-go@v6
@@ -39,9 +39,7 @@ jobs:
           git fetch origin ${{ github.base_ref }}
           opam repository add main git+https://github.com/ocaml/opam-repository.git
           opam repository add archive git+https://github.com/ocaml/opam-repository-archive.git
-          CHANGED_FILES=$(git diff --name-only -r HEAD^1 HEAD | grep advisories || :)
-          for x in $CHANGED_FILES; do
-            if [ -e "${x}" -a ! -s "${x}" ]; then echo "Skipping reserved advisory ${x}"; continue; fi
+          for x in $(find advisories/ -type f -size +0 | sort); do
             echo "Converting advisory $x"
             opam exec -- advisories $x > $x.json
             echo "Advisory is:"
