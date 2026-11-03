@@ -32,21 +32,23 @@ jobs:
           go-version: stable
 
       - name: Install osv-linter
-        run: go install github.com/ossf/osv-schema/tools/osv-linter/cmd/osv@latest
+        run: |
+          git clone --depth 1 -b linter-opam https://github.com/bn-d/osv-schema.git /tmp/osv-schema
+          cd /tmp/osv-schema/tools/osv-linter
+          go build -o "$(go env GOPATH)/bin/osv" ./cmd/osv
 
       - name: Check and run advisories
         run: |
           git fetch origin ${{ github.base_ref }}
           opam repository add main git+https://github.com/ocaml/opam-repository.git
           opam repository add archive git+https://github.com/ocaml/opam-repository-archive.git
-          CHANGED_FILES=$(git diff --name-only -r HEAD^1 HEAD | grep advisories || :)
-          for x in $CHANGED_FILES; do
-            if [ -e "${x}" -a ! -s "${x}" ]; then echo "Skipping reserved advisory ${x}"; continue; fi
+          RC=0
+          for x in $(find advisories/ -type f -size +0 | sort); do
             echo "Converting advisory $x"
             opam exec -- advisories $x > $x.json
             echo "Advisory is:"
             cat $x.json | jq
             echo "Validating advisory $x.json"
-            osv record lint --collection offline $x.json
-            echo "Done with exit code $?"
+            osv record lint --collection ALL $x.json || RC=1
           done
+          exit $RC
