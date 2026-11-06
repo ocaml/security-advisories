@@ -29,30 +29,6 @@
               "fixed": "5.5.2"
             }
           ]
-        },
-        {
-          "type": "GIT",
-          "repo": "https://github.com/ocaml/ocaml",
-          "events": [
-            {
-              "introduced": "0"
-            },
-            {
-              "fixed": "2247294d06464df0273479f41b0418655918da27"
-            }
-          ]
-        },
-        {
-          "type": "GIT",
-          "repo": "https://github.com/ocaml/ocaml",
-          "events": [
-            {
-              "introduced": "0"
-            },
-            {
-              "fixed": "9dcf0c86201cf5e8ece56c6bb5f61fc4d92fb74a"
-            }
-          ]
         }
       ],
       "versions": [
@@ -78,6 +54,34 @@
           "Runtime_events.read_poll"
         ]
       }
+    },
+    {
+      "ranges": [
+        {
+          "type": "GIT",
+          "repo": "https://github.com/ocaml/ocaml",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "2247294d06464df0273479f41b0418655918da27"
+            }
+          ]
+        },
+        {
+          "type": "GIT",
+          "repo": "https://github.com/ocaml/ocaml",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "9dcf0c86201cf5e8ece56c6bb5f61fc4d92fb74a"
+            }
+          ]
+        }
+      ]
     }
   ],
   "references": [],

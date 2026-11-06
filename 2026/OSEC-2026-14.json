@@ -32,18 +32,6 @@
               "fixed": "2.3.0"
             }
           ]
-        },
-        {
-          "type": "GIT",
-          "repo": "https://github.com/mirage/mirage-crypto.git",
-          "events": [
-            {
-              "introduced": "0"
-            },
-            {
-              "fixed": "a0f59a0c90eb067505b55a03d3bb104eacd6dd33"
-            }
-          ]
         }
       ],
       "versions": [
@@ -104,6 +92,22 @@
           "Mirage_crypto_pk.Rsa.PSS.verify"
         ]
       }
+    },
+    {
+      "ranges": [
+        {
+          "type": "GIT",
+          "repo": "https://github.com/mirage/mirage-crypto.git",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "a0f59a0c90eb067505b55a03d3bb104eacd6dd33"
+            }
+          ]
+        }
+      ]
     }
   ],
   "references": [],

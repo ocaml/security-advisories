@@ -32,18 +32,6 @@
               "fixed": "0.7.5"
             }
           ]
-        },
-        {
-          "type": "GIT",
-          "repo": "https://github.com/solo5/solo5",
-          "events": [
-            {
-              "fixed": "099be86f0a17a619fcadbb970bb9e511d28d3cd8"
-            },
-            {
-              "introduced": "f4b47d11983bf8f32aaf4ec496a045c35e4e582f"
-            }
-          ]
         }
       ],
       "versions": [
@@ -56,6 +44,22 @@
       "ecosystem_specific": {
         "opam_constraint": "solo5 {>= \"0.6.6\" & < \"0.7.5\"}"
       }
+    },
+    {
+      "ranges": [
+        {
+          "type": "GIT",
+          "repo": "https://github.com/solo5/solo5",
+          "events": [
+            {
+              "fixed": "099be86f0a17a619fcadbb970bb9e511d28d3cd8"
+            },
+            {
+              "introduced": "f4b47d11983bf8f32aaf4ec496a045c35e4e582f"
+            }
+          ]
+        }
+      ]
     }
   ],
   "references": [

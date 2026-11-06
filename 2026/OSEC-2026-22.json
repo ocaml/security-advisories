@@ -40,42 +40,6 @@
               "fixed": "5.5.2"
             }
           ]
-        },
-        {
-          "type": "GIT",
-          "repo": "https://github.com/ocaml/ocaml",
-          "events": [
-            {
-              "introduced": "0"
-            },
-            {
-              "fixed": "de57bb4f59c3302260aaeaaa4dfee12695597d25"
-            }
-          ]
-        },
-        {
-          "type": "GIT",
-          "repo": "https://github.com/ocaml/ocaml",
-          "events": [
-            {
-              "introduced": "0"
-            },
-            {
-              "fixed": "ff978d2139ba638886c2565f2d86c0ee265840a5"
-            }
-          ]
-        },
-        {
-          "type": "GIT",
-          "repo": "https://github.com/ocaml/ocaml",
-          "events": [
-            {
-              "introduced": "0"
-            },
-            {
-              "fixed": "ed4860325cbb11bf05be34fae6ded8019159d182"
-            }
-          ]
         }
       ],
       "versions": [
@@ -168,6 +132,46 @@
           "Unix.map_file"
         ]
       }
+    },
+    {
+      "ranges": [
+        {
+          "type": "GIT",
+          "repo": "https://github.com/ocaml/ocaml",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "de57bb4f59c3302260aaeaaa4dfee12695597d25"
+            }
+          ]
+        },
+        {
+          "type": "GIT",
+          "repo": "https://github.com/ocaml/ocaml",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "ff978d2139ba638886c2565f2d86c0ee265840a5"
+            }
+          ]
+        },
+        {
+          "type": "GIT",
+          "repo": "https://github.com/ocaml/ocaml",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "ed4860325cbb11bf05be34fae6ded8019159d182"
+            }
+          ]
+        }
+      ]
     }
   ],
   "references": [],

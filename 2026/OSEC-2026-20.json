@@ -32,18 +32,6 @@
               "fixed": "6.3.0"
             }
           ]
-        },
-        {
-          "type": "GIT",
-          "repo": "https://github.com/mirage/ocaml-cstruct",
-          "events": [
-            {
-              "introduced": "0"
-            },
-            {
-              "fixed": "936f1010d3e9914da9c5c8a4739e9278a37e1c3e"
-            }
-          ]
         }
       ],
       "versions": [
@@ -112,6 +100,22 @@
           "Cstruct.find_rev"
         ]
       }
+    },
+    {
+      "ranges": [
+        {
+          "type": "GIT",
+          "repo": "https://github.com/mirage/ocaml-cstruct",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "936f1010d3e9914da9c5c8a4739e9278a37e1c3e"
+            }
+          ]
+        }
+      ]
     }
   ],
   "references": [

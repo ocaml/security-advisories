@@ -32,18 +32,6 @@
               "fixed": "2.4.0"
             }
           ]
-        },
-        {
-          "type": "GIT",
-          "repo": "https://github.com/mirage/mirage-crypto",
-          "events": [
-            {
-              "introduced": "0"
-            },
-            {
-              "fixed": "1a61aeee7f593ec067612df1739ec905eab0450f"
-            }
-          ]
         }
       ],
       "versions": [
@@ -76,6 +64,22 @@
           "Mirage_crypto_ec.P521.Dsa.pub_of_priv"
         ]
       }
+    },
+    {
+      "ranges": [
+        {
+          "type": "GIT",
+          "repo": "https://github.com/mirage/mirage-crypto",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "1a61aeee7f593ec067612df1739ec905eab0450f"
+            }
+          ]
+        }
+      ]
     }
   ],
   "references": [],

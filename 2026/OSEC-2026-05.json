@@ -43,42 +43,6 @@
               "fixed": "5.5.0"
             }
           ]
-        },
-        {
-          "type": "GIT",
-          "repo": "https://github.com/ocaml/ocaml",
-          "events": [
-            {
-              "introduced": "0"
-            },
-            {
-              "fixed": "ce6d0f7b67145debec57e296dcc49d8619259198"
-            }
-          ]
-        },
-        {
-          "type": "GIT",
-          "repo": "https://github.com/ocaml/ocaml",
-          "events": [
-            {
-              "introduced": "0"
-            },
-            {
-              "fixed": "39d3f110eab62ab9f3013bb5f084af2dc3e3bb08"
-            }
-          ]
-        },
-        {
-          "type": "GIT",
-          "repo": "https://github.com/ocaml/ocaml",
-          "events": [
-            {
-              "introduced": "0"
-            },
-            {
-              "fixed": "d5c65dc0034fbd75f10c6b54028e8b2740a7b189"
-            }
-          ]
         }
       ],
       "versions": [
@@ -165,6 +129,46 @@
       "ecosystem_specific": {
         "opam_constraint": "ocaml {< \"4.14.4\" | >= \"5\" & < \"5.5.0\"}"
       }
+    },
+    {
+      "ranges": [
+        {
+          "type": "GIT",
+          "repo": "https://github.com/ocaml/ocaml",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "ce6d0f7b67145debec57e296dcc49d8619259198"
+            }
+          ]
+        },
+        {
+          "type": "GIT",
+          "repo": "https://github.com/ocaml/ocaml",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "39d3f110eab62ab9f3013bb5f084af2dc3e3bb08"
+            }
+          ]
+        },
+        {
+          "type": "GIT",
+          "repo": "https://github.com/ocaml/ocaml",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "d5c65dc0034fbd75f10c6b54028e8b2740a7b189"
+            }
+          ]
+        }
+      ]
     }
   ],
   "references": [

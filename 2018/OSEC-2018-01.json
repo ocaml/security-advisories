@@ -32,18 +32,6 @@
               "fixed": "4.07.0"
             }
           ]
-        },
-        {
-          "type": "GIT",
-          "repo": "https://github.com/ocaml/ocaml",
-          "events": [
-            {
-              "introduced": "0"
-            },
-            {
-              "fixed": "9664c7ee807c2dfa802f53cabd405ff58e219c47"
-            }
-          ]
         }
       ],
       "versions": [
@@ -90,6 +78,22 @@
       "ecosystem_specific": {
         "opam_constraint": "ocaml {< \"4.07.0\"}"
       }
+    },
+    {
+      "ranges": [
+        {
+          "type": "GIT",
+          "repo": "https://github.com/ocaml/ocaml",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "9664c7ee807c2dfa802f53cabd405ff58e219c47"
+            }
+          ]
+        }
+      ]
     }
   ],
   "references": [

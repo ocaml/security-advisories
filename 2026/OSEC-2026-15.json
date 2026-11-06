@@ -32,18 +32,6 @@
               "fixed": "2.3.0"
             }
           ]
-        },
-        {
-          "type": "GIT",
-          "repo": "https://github.com/mirage/mirage-crypto.git",
-          "events": [
-            {
-              "introduced": "0"
-            },
-            {
-              "fixed": "1f0bf67044e67cf6e46911fcd77a0ff706b6c3e7"
-            }
-          ]
         }
       ],
       "versions": [
@@ -83,6 +71,22 @@
           "Mirage_crypto_ec.P521.Dh.key_exchange"
         ]
       }
+    },
+    {
+      "ranges": [
+        {
+          "type": "GIT",
+          "repo": "https://github.com/mirage/mirage-crypto.git",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "1f0bf67044e67cf6e46911fcd77a0ff706b6c3e7"
+            }
+          ]
+        }
+      ]
     }
   ],
   "references": [],

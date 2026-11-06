@@ -32,18 +32,6 @@
               "fixed": "2.7.2"
             }
           ]
-        },
-        {
-          "type": "GIT",
-          "repo": "https://git.robur.coop/robur/albatross.git",
-          "events": [
-            {
-              "introduced": "0"
-            },
-            {
-              "fixed": "e07de2a904133e633773302d335ceb1f2c9945da"
-            }
-          ]
         }
       ],
       "versions": [
@@ -81,6 +69,22 @@
       "ecosystem_specific": {
         "opam_constraint": "albatross {>= \"1.0.0\" & < \"2.7.2\"}"
       }
+    },
+    {
+      "ranges": [
+        {
+          "type": "GIT",
+          "repo": "https://git.robur.coop/robur/albatross.git",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "e07de2a904133e633773302d335ceb1f2c9945da"
+            }
+          ]
+        }
+      ]
     }
   ],
   "references": [

@@ -32,18 +32,6 @@
               "fixed": "0.11.0"
             }
           ]
-        },
-        {
-          "type": "GIT",
-          "repo": "https://github.com/ulrikstrid/ocaml-jose",
-          "events": [
-            {
-              "introduced": "0"
-            },
-            {
-              "fixed": "cf17d991ec6a0d1997956b6c7799890f9c28879e"
-            }
-          ]
         }
       ],
       "versions": [
@@ -63,6 +51,22 @@
       "ecosystem_specific": {
         "opam_constraint": "jose {< \"0.11.0\"}"
       }
+    },
+    {
+      "ranges": [
+        {
+          "type": "GIT",
+          "repo": "https://github.com/ulrikstrid/ocaml-jose",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "cf17d991ec6a0d1997956b6c7799890f9c28879e"
+            }
+          ]
+        }
+      ]
     }
   ],
   "references": [],

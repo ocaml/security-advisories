@@ -29,18 +29,6 @@
               "fixed": "6.3.0"
             }
           ]
-        },
-        {
-          "type": "GIT",
-          "repo": "https://github.com/mirage/ocaml-cohttp.git",
-          "events": [
-            {
-              "introduced": "0"
-            },
-            {
-              "fixed": "5f5a65ec3289c1cd8072bdf0ef22c181b4f11356"
-            }
-          ]
         }
       ],
       "versions": [
@@ -140,6 +128,22 @@
           "Cohttp_lwt.Make().resolve_local_file"
         ]
       }
+    },
+    {
+      "ranges": [
+        {
+          "type": "GIT",
+          "repo": "https://github.com/mirage/ocaml-cohttp.git",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "5f5a65ec3289c1cd8072bdf0ef22c181b4f11356"
+            }
+          ]
+        }
+      ]
     }
   ],
   "references": [],

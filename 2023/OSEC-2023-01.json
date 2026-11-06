@@ -29,18 +29,6 @@
               "fixed": "2.1.5"
             }
           ]
-        },
-        {
-          "type": "GIT",
-          "repo": "https://github.com/ocaml/opam",
-          "events": [
-            {
-              "fixed": "7a538fd0bf3b3956d84bb25d0f6b1126fa177595"
-            },
-            {
-              "introduced": "cfa4e77b49d0bccaf5c91b2e6f36089aab5e0540"
-            }
-          ]
         }
       ],
       "versions": [
@@ -76,6 +64,22 @@
       "ecosystem_specific": {
         "opam_constraint": "opam-repository {>= \"2\" & < \"2.1.5\"}"
       }
+    },
+    {
+      "ranges": [
+        {
+          "type": "GIT",
+          "repo": "https://github.com/ocaml/opam",
+          "events": [
+            {
+              "fixed": "7a538fd0bf3b3956d84bb25d0f6b1126fa177595"
+            },
+            {
+              "introduced": "cfa4e77b49d0bccaf5c91b2e6f36089aab5e0540"
+            }
+          ]
+        }
+      ]
     }
   ],
   "references": [

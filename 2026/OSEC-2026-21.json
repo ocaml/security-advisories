@@ -40,42 +40,6 @@
               "fixed": "5.5.2"
             }
           ]
-        },
-        {
-          "type": "GIT",
-          "repo": "https://github.com/ocaml/ocaml",
-          "events": [
-            {
-              "introduced": "0"
-            },
-            {
-              "fixed": "824dadcbde77aea27d84b8d70a72442b8fcb344a"
-            }
-          ]
-        },
-        {
-          "type": "GIT",
-          "repo": "https://github.com/ocaml/ocaml",
-          "events": [
-            {
-              "introduced": "0"
-            },
-            {
-              "fixed": "feccd4744ebe25b90208e569d03efd514b964dce"
-            }
-          ]
-        },
-        {
-          "type": "GIT",
-          "repo": "https://github.com/ocaml/ocaml",
-          "events": [
-            {
-              "introduced": "0"
-            },
-            {
-              "fixed": "2f8dc3dfa3bd99c1b8af68bbd5cb9f5593711b16"
-            }
-          ]
         }
       ],
       "versions": [
@@ -171,6 +135,46 @@
           "Str.replace_first"
         ]
       }
+    },
+    {
+      "ranges": [
+        {
+          "type": "GIT",
+          "repo": "https://github.com/ocaml/ocaml",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "824dadcbde77aea27d84b8d70a72442b8fcb344a"
+            }
+          ]
+        },
+        {
+          "type": "GIT",
+          "repo": "https://github.com/ocaml/ocaml",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "feccd4744ebe25b90208e569d03efd514b964dce"
+            }
+          ]
+        },
+        {
+          "type": "GIT",
+          "repo": "https://github.com/ocaml/ocaml",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "2f8dc3dfa3bd99c1b8af68bbd5cb9f5593711b16"
+            }
+          ]
+        }
+      ]
     }
   ],
   "references": [],

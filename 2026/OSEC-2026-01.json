@@ -45,54 +45,6 @@
               "fixed": "5.4.1"
             }
           ]
-        },
-        {
-          "type": "GIT",
-          "repo": "https://github.com/ocaml/ocaml",
-          "events": [
-            {
-              "introduced": "0"
-            },
-            {
-              "fixed": "b0a2614684a52acded784ec213f14ddfe085d146"
-            }
-          ]
-        },
-        {
-          "type": "GIT",
-          "repo": "https://github.com/ocaml/ocaml",
-          "events": [
-            {
-              "introduced": "0"
-            },
-            {
-              "fixed": "e3919fef436f89271bc30bbe8592851f7289fb68"
-            }
-          ]
-        },
-        {
-          "type": "GIT",
-          "repo": "https://github.com/ocaml/ocaml",
-          "events": [
-            {
-              "introduced": "0"
-            },
-            {
-              "fixed": "508d35d970a70a39ea2c9d9241ae4587a9b3a96a"
-            }
-          ]
-        },
-        {
-          "type": "GIT",
-          "repo": "https://github.com/ocaml/ocaml",
-          "events": [
-            {
-              "introduced": "0"
-            },
-            {
-              "fixed": "3aa27e4d2522950b2fe2acf868591209e93d1377"
-            }
-          ]
         }
       ],
       "versions": [
@@ -176,6 +128,58 @@
       "ecosystem_specific": {
         "opam_constraint": "ocaml {< \"4.14.3\" | >= \"5\" & < \"5.4.1\"}"
       }
+    },
+    {
+      "ranges": [
+        {
+          "type": "GIT",
+          "repo": "https://github.com/ocaml/ocaml",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "b0a2614684a52acded784ec213f14ddfe085d146"
+            }
+          ]
+        },
+        {
+          "type": "GIT",
+          "repo": "https://github.com/ocaml/ocaml",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "e3919fef436f89271bc30bbe8592851f7289fb68"
+            }
+          ]
+        },
+        {
+          "type": "GIT",
+          "repo": "https://github.com/ocaml/ocaml",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "508d35d970a70a39ea2c9d9241ae4587a9b3a96a"
+            }
+          ]
+        },
+        {
+          "type": "GIT",
+          "repo": "https://github.com/ocaml/ocaml",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "3aa27e4d2522950b2fe2acf868591209e93d1377"
+            }
+          ]
+        }
+      ]
     }
   ],
   "references": [

@@ -29,18 +29,6 @@
               "fixed": "1.4.2"
             }
           ]
-        },
-        {
-          "type": "GIT",
-          "repo": "https://github.com/mirage/mirage-net-xen",
-          "events": [
-            {
-              "introduced": "0"
-            },
-            {
-              "fixed": "0b1e53c0875062a50e2d5823b7da0d8e0a64dc37"
-            }
-          ]
         }
       ],
       "versions": [
@@ -57,6 +45,22 @@
       "ecosystem_specific": {
         "opam_constraint": "mirage-net-xen {< \"1.4.2\"}"
       }
+    },
+    {
+      "ranges": [
+        {
+          "type": "GIT",
+          "repo": "https://github.com/mirage/mirage-net-xen",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "0b1e53c0875062a50e2d5823b7da0d8e0a64dc37"
+            }
+          ]
+        }
+      ]
     }
   ],
   "references": [

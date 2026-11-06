@@ -32,18 +32,6 @@
               "fixed": "2.2.0"
             }
           ]
-        },
-        {
-          "type": "GIT",
-          "repo": "https://github.com/mirage/mirage-crypto.git",
-          "events": [
-            {
-              "introduced": "0"
-            },
-            {
-              "fixed": "25e7570aec91e092b347561c23f84b6ec39e7163"
-            }
-          ]
         }
       ],
       "versions": [
@@ -97,6 +85,22 @@
           "Mirage_crypto.AES.GCM.unsafe_authenticate_decrypt_into"
         ]
       }
+    },
+    {
+      "ranges": [
+        {
+          "type": "GIT",
+          "repo": "https://github.com/mirage/mirage-crypto.git",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "25e7570aec91e092b347561c23f84b6ec39e7163"
+            }
+          ]
+        }
+      ]
     }
   ],
   "references": [],

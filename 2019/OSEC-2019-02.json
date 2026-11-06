@@ -29,18 +29,6 @@
               "fixed": "3.3.0"
             }
           ]
-        },
-        {
-          "type": "GIT",
-          "repo": "https://github.com/mirage/mirage-xen",
-          "events": [
-            {
-              "introduced": "0"
-            },
-            {
-              "fixed": "f86e173922233568158c605ab98add623bedf948"
-            }
-          ]
         }
       ],
       "versions": [
@@ -83,6 +71,22 @@
       "ecosystem_specific": {
         "opam_constraint": "mirage-xen {< \"3.3.0\"}"
       }
+    },
+    {
+      "ranges": [
+        {
+          "type": "GIT",
+          "repo": "https://github.com/mirage/mirage-xen",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "f86e173922233568158c605ab98add623bedf948"
+            }
+          ]
+        }
+      ]
     }
   ],
   "references": [

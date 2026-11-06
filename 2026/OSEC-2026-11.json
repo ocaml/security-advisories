@@ -32,18 +32,6 @@
               "fixed": "0.0.6"
             }
           ]
-        },
-        {
-          "type": "GIT",
-          "repo": "https://git.robur.coop/robur/utcp.git",
-          "events": [
-            {
-              "introduced": "0"
-            },
-            {
-              "fixed": "08522428c957d796a6455d5aad434701c879fd4e"
-            }
-          ]
         }
       ],
       "versions": [
@@ -56,6 +44,22 @@
       "ecosystem_specific": {
         "opam_constraint": "utcp {< \"0.0.6\"}"
       }
+    },
+    {
+      "ranges": [
+        {
+          "type": "GIT",
+          "repo": "https://git.robur.coop/robur/utcp.git",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "08522428c957d796a6455d5aad434701c879fd4e"
+            }
+          ]
+        }
+      ]
     }
   ],
   "references": [],

@@ -32,18 +32,6 @@
               "fixed": "4.14.4"
             }
           ]
-        },
-        {
-          "type": "GIT",
-          "repo": "https://github.com/ocaml/ocaml",
-          "events": [
-            {
-              "introduced": "0"
-            },
-            {
-              "fixed": "1ec6b6e8ef9d30fc1d8bac71a6646c2ef78ea90b"
-            }
-          ]
         }
       ],
       "versions": [
@@ -125,6 +113,22 @@
           "caml_ba_reshape"
         ]
       }
+    },
+    {
+      "ranges": [
+        {
+          "type": "GIT",
+          "repo": "https://github.com/ocaml/ocaml",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "1ec6b6e8ef9d30fc1d8bac71a6646c2ef78ea90b"
+            }
+          ]
+        }
+      ]
     }
   ],
   "references": [

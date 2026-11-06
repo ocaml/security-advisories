@@ -29,7 +29,17 @@
               "fixed": "1.10.1"
             }
           ]
-        },
+        }
+      ],
+      "versions": [
+        "1.10.0"
+      ],
+      "ecosystem_specific": {
+        "opam_constraint": "netchannel {>= \"1.10.0\" & < \"1.10.1\"}"
+      }
+    },
+    {
+      "ranges": [
         {
           "type": "GIT",
           "repo": "https://github.com/mirage/mirage-net-xen",
@@ -42,13 +52,7 @@
             }
           ]
         }
-      ],
-      "versions": [
-        "1.10.0"
-      ],
-      "ecosystem_specific": {
-        "opam_constraint": "netchannel {>= \"1.10.0\" & < \"1.10.1\"}"
-      }
+      ]
     }
   ],
   "references": [

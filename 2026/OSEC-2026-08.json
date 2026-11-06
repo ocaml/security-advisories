@@ -32,18 +32,6 @@
               "fixed": "3.5.0"
             }
           ]
-        },
-        {
-          "type": "GIT",
-          "repo": "https://github.com/mirage/ocaml-tar",
-          "events": [
-            {
-              "introduced": "0"
-            },
-            {
-              "fixed": "51ceb0a15982993503c169b9d84456fd50eabe99"
-            }
-          ]
         }
       ],
       "versions": [
@@ -72,6 +60,22 @@
       "ecosystem_specific": {
         "opam_constraint": "tar {< \"3.5.0\"}"
       }
+    },
+    {
+      "ranges": [
+        {
+          "type": "GIT",
+          "repo": "https://github.com/mirage/ocaml-tar",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "51ceb0a15982993503c169b9d84456fd50eabe99"
+            }
+          ]
+        }
+      ]
     }
   ],
   "references": [],

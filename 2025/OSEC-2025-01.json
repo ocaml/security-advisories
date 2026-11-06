@@ -29,18 +29,6 @@
               "fixed": "2.5.0"
             }
           ]
-        },
-        {
-          "type": "GIT",
-          "repo": "https://github.com/robur-coop/albatross",
-          "events": [
-            {
-              "introduced": "0"
-            },
-            {
-              "fixed": "d01805796ec710691a701c01ed3f0e4cd284a161"
-            }
-          ]
         }
       ],
       "versions": [
@@ -71,6 +59,22 @@
       "ecosystem_specific": {
         "opam_constraint": "albatross {< \"2.5.0\"}"
       }
+    },
+    {
+      "ranges": [
+        {
+          "type": "GIT",
+          "repo": "https://github.com/robur-coop/albatross",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "d01805796ec710691a701c01ed3f0e4cd284a161"
+            }
+          ]
+        }
+      ]
     }
   ],
   "references": [

@@ -32,30 +32,6 @@
               "fixed": "2.5.1"
             }
           ]
-        },
-        {
-          "type": "GIT",
-          "repo": "https://github.com/ocaml/opam",
-          "events": [
-            {
-              "introduced": "0"
-            },
-            {
-              "fixed": "d7283e3b5845447ee618794d87cfe224dd980c8f"
-            }
-          ]
-        },
-        {
-          "type": "GIT",
-          "repo": "https://github.com/ocaml/opam",
-          "events": [
-            {
-              "introduced": "0"
-            },
-            {
-              "fixed": "c8fcf65779fe7048f9b5ef59886bfa9c5d102d84"
-            }
-          ]
         }
       ],
       "versions": [
@@ -117,6 +93,34 @@
       "ecosystem_specific": {
         "opam_constraint": "opam-devel {< \"2.5.1\"}"
       }
+    },
+    {
+      "ranges": [
+        {
+          "type": "GIT",
+          "repo": "https://github.com/ocaml/opam",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "d7283e3b5845447ee618794d87cfe224dd980c8f"
+            }
+          ]
+        },
+        {
+          "type": "GIT",
+          "repo": "https://github.com/ocaml/opam",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "c8fcf65779fe7048f9b5ef59886bfa9c5d102d84"
+            }
+          ]
+        }
+      ]
     }
   ],
   "references": [

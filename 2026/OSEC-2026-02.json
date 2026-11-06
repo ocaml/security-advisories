@@ -29,18 +29,6 @@
               "fixed": "4.1.0"
             }
           ]
-        },
-        {
-          "type": "GIT",
-          "repo": "https://github.com/mirage/arp",
-          "events": [
-            {
-              "introduced": "0"
-            },
-            {
-              "fixed": "a700d9f139a387839172dde816660472023cb13f"
-            }
-          ]
         }
       ],
       "versions": [
@@ -64,6 +52,22 @@
       "ecosystem_specific": {
         "opam_constraint": "arp {< \"4.1.0\"}"
       }
+    },
+    {
+      "ranges": [
+        {
+          "type": "GIT",
+          "repo": "https://github.com/mirage/arp",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "a700d9f139a387839172dde816660472023cb13f"
+            }
+          ]
+        }
+      ]
     }
   ],
   "references": [
