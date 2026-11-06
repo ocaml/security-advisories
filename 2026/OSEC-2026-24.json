@@ -1,7 +1,7 @@
 {
   "schema_version": "1.7.4",
   "id": "OSEC-2026-24",
-  "modified": "2026-10-23T21:30:00Z",
+  "modified": "2026-11-06T12:30:00Z",
   "published": "2026-10-23T21:30:00Z",
   "aliases": [
     "CVE-2026-41083"
@@ -29,6 +29,17 @@
               "introduced": "0"
             },
             {
+              "fixed": "4.14.5"
+            }
+          ]
+        },
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "5"
+            },
+            {
               "fixed": "5.5.2"
             }
           ]
@@ -54,6 +65,18 @@
             },
             {
               "fixed": "0bbf8e5af985feb03a11a5ffe57d068373d09fd0"
+            }
+          ]
+        },
+        {
+          "type": "GIT",
+          "repo": "https://github.com/ocaml/ocaml",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "7a2a148bd17158c822235b29b024526629154901"
             }
           ]
         }
@@ -126,7 +149,6 @@
         "4.14.2",
         "4.14.3",
         "4.14.4",
-        "4.14.5",
         "5.0.0",
         "5.0.1",
         "5.1.0",
@@ -144,7 +166,7 @@
         "5.5.1"
       ],
       "ecosystem_specific": {
-        "opam_constraint": "ocaml {< \"5.5.2\"}",
+        "opam_constraint": "ocaml {< \"4.14.5\" | >= \"5\" & < \"5.5.2\"}",
         "affected_bindings": [
           "Filename.quote_command",
           "Unix.create_process",

@@ -26,6 +26,17 @@
               "introduced": "0"
             },
             {
+              "fixed": "4.14.5"
+            }
+          ]
+        },
+        {
+          "type": "ECOSYSTEM",
+          "events": [
+            {
+              "introduced": "5"
+            },
+            {
               "fixed": "5.5.2"
             }
           ]
@@ -51,6 +62,18 @@
             },
             {
               "fixed": "feccd4744ebe25b90208e569d03efd514b964dce"
+            }
+          ]
+        },
+        {
+          "type": "GIT",
+          "repo": "https://github.com/ocaml/ocaml",
+          "events": [
+            {
+              "introduced": "0"
+            },
+            {
+              "fixed": "2f8dc3dfa3bd99c1b8af68bbd5cb9f5593711b16"
             }
           ]
         }
@@ -123,7 +146,6 @@
         "4.14.2",
         "4.14.3",
         "4.14.4",
-        "4.14.5",
         "5.0.0",
         "5.0.1",
         "5.1.0",
@@ -141,7 +163,7 @@
         "5.5.1"
       ],
       "ecosystem_specific": {
-        "opam_constraint": "ocaml {< \"5.5.2\"}",
+        "opam_constraint": "ocaml {< \"4.14.5\" | >= \"5\" & < \"5.5.2\"}",
         "affected_bindings": [
           "Str.string_partial_match",
           "Str.replace_matched",
